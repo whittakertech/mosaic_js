@@ -1,0 +1,8 @@
+services:
+  mosaic:
+    build: .
+    container_name: whittakertech_mosaic
+    volumes:
+      - .:/app
+    stdin_open: true
+    tty: true

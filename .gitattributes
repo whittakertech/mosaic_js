@@ -1,0 +1,38 @@
+# Normalize all text files to LF in the repo
+* text=auto eol=lf
+
+# TypeScript, JavaScript, JSON, etc. — always LF
+*.ts text eol=lf
+*.tsx text eol=lf
+*.js text eol=lf
+*.jsx text eol=lf
+*.json text eol=lf
+*.mjs text eol=lf
+*.cjs text eol=lf
+
+# Config files
+*.yml text eol=lf
+*.yaml text eol=lf
+*.toml text eol=lf
+*.md text eol=lf
+*.html text eol=lf
+*.css text eol=lf
+*.scss text eol=lf
+*.dockerfile text eol=lf
+Dockerfile text eol=lf
+
+# Shell scripts MUST be LF or they break in Docker/Linux
+*.sh text eol=lf
+
+# Gitignore, gitattributes, editorconfig
+*.gitignore text eol=lf
+*.gitattributes text eol=lf
+*.editorconfig text eol=lf
+
+# Do NOT modify line endings in compiled files or binaries
+*.png -text
+*.jpg -text
+*.gif -text
+*.ico -text
+*.svg -text
+dist/* -text
