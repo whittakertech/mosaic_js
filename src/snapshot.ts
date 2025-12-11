@@ -1,9 +1,17 @@
-import type { MosaicState } from "./state";
+// import type { MosaicState } from "./state";
 
-export function createSnapshot(): MosaicState {
-  return MosaicState.Idle;
+export interface MosaicSnapshot {
+    dom: {
+        parent: HTMLElement;
+        order: number;
+        id: string;
+    }[];
 }
 
-export function restoreSnapshot(_snapshot: MosaicState): void {
+// export function createSnapshot(): MosaicState {
+//   return MosaicState.Idle;
+// }
+
+export function restoreSnapshot(_snapshot: MosaicSnapshot): void {
   // placeholder
 }

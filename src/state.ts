@@ -5,5 +5,5 @@ export enum MosaicState {
   Hovering = "hovering",
   Dropping = "dropping",
   Pending = "pending",
-  RollingBack = "rollback"
+  RollingBack = "rollback",
 }

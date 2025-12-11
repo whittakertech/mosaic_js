@@ -1,0 +1,115 @@
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { Mosaic } from "../src/mosaic";
+import { MosaicState } from "../src/state";
+import * as events from "../src/events";
+import * as snapshotModule from "../src/snapshot";
+
+describe("Mosaic Core C1", () => {
+  let root: HTMLElement;
+
+  beforeEach(() => {
+    document.body.innerHTML = '<div id="root"></div>';
+    root = document.getElementById('root')!;
+  });
+
+  it("emits mosaic:init on initialize()", () => {
+    const spy = vi.spyOn(events, "emit");
+    const mosaic = new Mosaic({
+      root,
+      selectors: { node: ".item" }
+    });
+
+    mosaic.initialize();
+
+    expect(spy).toHaveBeenCalledWith("mosaic:init");
+  });
+
+  it("emits mosaic:destroy on destroy()", () => {
+    const spy = vi.spyOn(events, "emit");
+    const mosaic = new Mosaic({
+      root,
+      selectors: { node: ".item" },
+    });
+
+    mosaic.destroy();
+
+    expect(spy).toHaveBeenCalledWith("mosaic:destroy");
+  });
+
+  it("confirm() clears snapshot and emits mosaic:mutation:confirmed", () => {
+    const spy = vi.spyOn(events, "emit");
+    const mosaic = new Mosaic({
+      root,
+      selectors: { node: ".item" },
+    });
+
+    // set fake snapshot
+    // @ts-ignore accessing private field for test
+    mosaic.snapshot = { fake: true };
+
+    mosaic.confirm();
+
+    // snapshot cleared
+    // @ts-ignore
+    expect(mosaic.snapshot).toBeNull();
+
+    // event emitted
+    expect(spy).toHaveBeenCalledWith("mosaic:mutation:confirmed");
+  });
+
+  it("reject() restores snapshot and emits rejection + rollback events", () => {
+    const restoreSpy = vi.spyOn(snapshotModule, "restoreSnapshot");
+    const emitSpy = vi.spyOn(events, "emit");
+
+    const mosaic = new Mosaic({
+      root,
+      selectors: { node: ".item" },
+    });
+
+    // create fake snapshot
+    const fakeSnapshot = { value: 123 };
+    // @ts-ignore
+    mosaic.snapshot = fakeSnapshot;
+
+    mosaic.reject();
+
+    expect(restoreSpy).toHaveBeenCalledWith(fakeSnapshot);
+    expect(emitSpy).toHaveBeenCalledWith("mosaic:mutation:rejected");
+    expect(emitSpy).toHaveBeenCalledWith("mosaic:rollback");
+  });
+
+  it("reject() does nothing when no snapshot exists", () => {
+    const restoreSpy = vi.spyOn(snapshotModule, "restoreSnapshot");
+    const emitSpy = vi.spyOn(events, "emit");
+
+    const mosaic = new Mosaic({
+      root,
+      selectors: { node: ".item" },
+    });
+
+    // snapshot is null, the default
+    mosaic.reject();
+
+    expect(restoreSpy).not.toHaveBeenCalled();
+    expect(emitSpy).not.toHaveBeenCalledWith("mosaic:mutation:rejected");
+    expect(emitSpy).not.toHaveBeenCalledWith("mosaic:rollback");
+  });
+
+  it("setState() updates state and emits mosaic:state", () => {
+    const mosaic = new Mosaic({
+      root,
+      selectors: { node: ".item" },
+    });
+
+    const emitSpy = vi.spyOn(events, "emit");
+
+    // @ts-ignore private method
+    mosaic.setState(MosaicState.Dragging);
+
+    // @ts-ignore access private field
+    expect(mosaic.state).toBe(MosaicState.Dragging);
+    expect(emitSpy).toHaveBeenCalledWith("mosaic:state", {
+      state: MosaicState.Dragging,
+    });
+  });
+});

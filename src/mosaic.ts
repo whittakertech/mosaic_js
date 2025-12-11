@@ -1,5 +1,5 @@
 import { MosaicState } from "./state";
-import { createSnapshot, restoreSnapshot } from "./snapshot";
+import { restoreSnapshot, MosaicSnapshot } from "./snapshot";
 import { emit } from "./events";
 
 export interface MosaicOptions {
@@ -14,18 +14,19 @@ export interface MosaicOptions {
 
 export class Mosaic {
   private root: HTMLElement;
+  private selectors: MosaicOptions["selectors"];
   private state: MosaicState;
-  private snapshot: MosaicState | null = null;
+  private snapshot: MosaicSnapshot | null = null;
 
   constructor(options: MosaicOptions) {
     this.root = options.root;
+    this.selectors = options.selectors;
     this.state = MosaicState.Idle;
-
-    this.bind();
   }
 
-  private bind() {
-    // pointerdown, pointermove, pointerup hooks go here
+  initialize() {
+    this.bind();
+    emit("mosaic:init");
   }
 
   confirm() {
@@ -34,10 +35,24 @@ export class Mosaic {
   }
 
   reject() {
-    if (this.snapshot) {
+    if(this.snapshot !== null){
       restoreSnapshot(this.snapshot);
       emit("mosaic:mutation:rejected");
       emit("mosaic:rollback");
     }
   }
+
+  destroy() {
+    emit("mosaic:destroy");
+  }
+  
+  private bind() {
+    // pointerdown, pointermove, pointerup hooks go here
+  }
+
+  private setState(s: MosaicState) {
+    this.state = s;
+    emit("mosaic:state", { state: s });
+  }
+
 }
