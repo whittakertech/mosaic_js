@@ -1,5 +1,6 @@
 import { MosaicState } from "./state";
-import { restoreSnapshot, MosaicSnapshot } from "./snapshot";
+import type { MosaicSnapshot } from "./snapshot";
+import { restoreSnapshot } from "./snapshot";
 import { emit } from "./events";
 
 export interface MosaicOptions {
@@ -35,17 +36,19 @@ export class Mosaic {
   }
 
   reject() {
-    if(this.snapshot !== null){
-      restoreSnapshot(this.snapshot);
-      emit("mosaic:mutation:rejected");
-      emit("mosaic:rollback");
-    }
+    if (this.snapshot == null) return;
+
+    restoreSnapshot(this.snapshot);
+    emit("mosaic:mutation:rejected");
+    emit("mosaic:rollback");
+
+    this.snapshot = null;
   }
 
   destroy() {
     emit("mosaic:destroy");
   }
-  
+
   private bind() {
     // pointerdown, pointermove, pointerup hooks go here
   }
@@ -54,5 +57,4 @@ export class Mosaic {
     this.state = s;
     emit("mosaic:state", { state: s });
   }
-
 }

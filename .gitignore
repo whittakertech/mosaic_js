@@ -71,3 +71,6 @@ coverage/
 
 logs/
 *.log
+
+docs/.vitepress/cache
+tmp/

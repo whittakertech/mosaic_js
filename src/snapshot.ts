@@ -1,17 +1,31 @@
-// import type { MosaicState } from "./state";
-
 export interface MosaicSnapshot {
-    dom: {
-        parent: HTMLElement;
-        order: number;
-        id: string;
-    }[];
+  dom: {
+    parent: HTMLElement;
+    order: number;
+    id: string;
+  }[];
 }
 
-// export function createSnapshot(): MosaicState {
-//   return MosaicState.Idle;
-// }
+export function createSnapshot(root: HTMLElement): MosaicSnapshot {
+  const nodes = [...root.querySelectorAll("[data-mosaic-id]")];
 
-export function restoreSnapshot(_snapshot: MosaicSnapshot): void {
-  // placeholder
+  return {
+    dom: nodes.map((el) => ({
+      id: el.getAttribute("data-mosaic-id")!,
+      parent: el.parentElement!,
+      order: Array.from(el.parentElement!.children).indexOf(el),
+    })),
+  };
+}
+
+export function restoreSnapshot(s: MosaicSnapshot | null | undefined) {
+  if (!s || !Array.isArray(s.dom)) return;
+
+  for (const { id, parent, order } of s.dom) {
+    const el = document.querySelector(`[data-mosaic-id="${id}"]`);
+    if (!el) continue;
+
+    const ref = parent.children[order] || null;
+    parent.insertBefore(el, ref);
+  }
 }

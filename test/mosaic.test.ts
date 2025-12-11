@@ -1,23 +1,25 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { Mosaic } from "../src/mosaic";
 import { MosaicState } from "../src/state";
 import * as events from "../src/events";
 import * as snapshotModule from "../src/snapshot";
 
-describe("Mosaic Core C1", () => {
+describe("Mosaic", () => {
   let root: HTMLElement;
+  let mosaic: Mosaic;
 
   beforeEach(() => {
     document.body.innerHTML = '<div id="root"></div>';
     root = document.getElementById('root')!;
+    mosaic = new Mosaic({ root, selectors: { node: ".item" } });
   });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  })
 
   it("emits mosaic:init on initialize()", () => {
     const spy = vi.spyOn(events, "emit");
-    const mosaic = new Mosaic({
-      root,
-      selectors: { node: ".item" }
-    });
 
     mosaic.initialize();
 
@@ -26,10 +28,6 @@ describe("Mosaic Core C1", () => {
 
   it("emits mosaic:destroy on destroy()", () => {
     const spy = vi.spyOn(events, "emit");
-    const mosaic = new Mosaic({
-      root,
-      selectors: { node: ".item" },
-    });
 
     mosaic.destroy();
 
@@ -38,10 +36,6 @@ describe("Mosaic Core C1", () => {
 
   it("confirm() clears snapshot and emits mosaic:mutation:confirmed", () => {
     const spy = vi.spyOn(events, "emit");
-    const mosaic = new Mosaic({
-      root,
-      selectors: { node: ".item" },
-    });
 
     // set fake snapshot
     // @ts-ignore accessing private field for test
@@ -61,13 +55,13 @@ describe("Mosaic Core C1", () => {
     const restoreSpy = vi.spyOn(snapshotModule, "restoreSnapshot");
     const emitSpy = vi.spyOn(events, "emit");
 
-    const mosaic = new Mosaic({
-      root,
-      selectors: { node: ".item" },
-    });
-
     // create fake snapshot
-    const fakeSnapshot = { value: 123 };
+    const fakeSnapshot: snapshotModule.MosaicSnapshot = {
+      dom: [
+        { id: "a", parent: root, order: 0 },
+        { id: "b", parent: root, order: 1 }
+      ]
+    }
     // @ts-ignore
     mosaic.snapshot = fakeSnapshot;
 
@@ -82,10 +76,7 @@ describe("Mosaic Core C1", () => {
     const restoreSpy = vi.spyOn(snapshotModule, "restoreSnapshot");
     const emitSpy = vi.spyOn(events, "emit");
 
-    const mosaic = new Mosaic({
-      root,
-      selectors: { node: ".item" },
-    });
+    expect(mosaic.snapshot).toBeNull();
 
     // snapshot is null, the default
     mosaic.reject();
@@ -96,11 +87,6 @@ describe("Mosaic Core C1", () => {
   });
 
   it("setState() updates state and emits mosaic:state", () => {
-    const mosaic = new Mosaic({
-      root,
-      selectors: { node: ".item" },
-    });
-
     const emitSpy = vi.spyOn(events, "emit");
 
     // @ts-ignore private method

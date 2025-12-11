@@ -1,0 +1,60 @@
+# Constraints Design
+
+Constraints determine whether a drag operation may complete.  
+They enforce structural rules and prevent invalid mutations.
+
+---
+
+## Mermaid Diagram: Constraint Evaluation
+
+```mermaid
+flowchart TD
+    A[User drops node] --> B["checkConstraints(dragged, target)"]
+    B --> C{Valid?}
+    C -->|yes| D[Allow drop]
+    C -->|no| E[Reject drop]
+    E --> F[Rollback via restoreSnapshot]
+```
+
+---
+
+## Built-in v0.1 Constraints
+
+### Self-Drop Prevention
+```ts
+if (dragged === target) {
+  return { allowed: false, reason: "self-drop" };
+}
+```
+
+### Selector Validation
+```ts
+if (!target.matches(options.selectors.node)) {
+  return { allowed: false, reason: "invalid-target" };
+}
+```
+
+---
+
+## Extending Constraints (v0.2+)
+
+You may chain constraints:
+
+```ts
+const result = allConstraints.map(fn => fn(...args))
+  .find(r => r.allowed === false);
+```
+
+Future features will allow:
+
+- hierarchical constraints
+- group-based constraints
+- restricted-parent rules
+- custom constraint registration
+
+---
+
+## Guarantees
+
+- Constraint evaluation is deterministic
+- Rejecting a drop always invokes rollback  
