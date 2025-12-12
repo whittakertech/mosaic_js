@@ -20,7 +20,7 @@ export class DragController {
 
   pointerDown(e: PointerEvent) {
     const node = (e.target as HTMLElement)?.closest(this.mosaic.selectors.node);
-    if (!node) return;
+    if (!(node instanceof HTMLElement)) return;
 
     this.activeNode = node;
     this.activeNode.classList.add("mosaic--dragging");

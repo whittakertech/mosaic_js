@@ -27,7 +27,8 @@
     "coverage": "vitest run --coverage",
     "lint": "eslint src --ext .ts",
     "docs": "vitepress dev docs",
-    "docs:build": "vitepress build docs"
+    "docs:build": "vitepress build docs",
+    "docs:api": "typedoc"
   },
   "keywords": [
     "drag-drop",
@@ -36,6 +37,7 @@
     "whittakertech"
   ],
   "devDependencies": {
+    "@nolebase/vitepress-plugin-sidebar": "^2.18.2",
     "@typescript-eslint/eslint-plugin": "^8.49.0",
     "@typescript-eslint/parser": "^8.49.0",
     "@vitest/coverage-v8": "^4.0.15",
@@ -46,6 +48,9 @@
     "jsdom": "^27.3.0",
     "prettier": "^3.7.4",
     "tsup": "^8.5.1",
+    "typedoc": "^0.28.15",
+    "typedoc-plugin-markdown": "^4.9.0",
+    "typedoc-vitepress-theme": "^1.1.2",
     "typescript": "^5.9.3",
     "vitepress": "^1.6.4",
     "vitest": "^4.0.15"

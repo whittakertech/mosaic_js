@@ -1,6 +1,6 @@
-# Mosaic
+# MosaicJS
 
-Mosaic is a lightweight, event-driven drag-and-drop engine designed for the
+MosaicJS is a lightweight, event-driven drag-and-drop engine designed for the
 WhittakerTech ecosystem. It provides:
 
 - snapshot + rollback mechanics

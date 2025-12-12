@@ -1,0 +1,62 @@
+[
+  {
+    "text": "Enumerations",
+    "collapsed": false,
+    "items": [
+      {
+        "text": "MosaicState",
+        "link": "/api/enums/MosaicState.md"
+      }
+    ]
+  },
+  {
+    "text": "Classes",
+    "collapsed": false,
+    "items": [
+      {
+        "text": "Mosaic",
+        "link": "/api/classes/Mosaic.md"
+      }
+    ]
+  },
+  {
+    "text": "Interfaces",
+    "collapsed": false,
+    "items": [
+      {
+        "text": "ConstraintResult",
+        "link": "/api/interfaces/ConstraintResult.md"
+      },
+      {
+        "text": "MosaicOptions",
+        "link": "/api/interfaces/MosaicOptions.md"
+      },
+      {
+        "text": "MosaicSnapshot",
+        "link": "/api/interfaces/MosaicSnapshot.md"
+      }
+    ]
+  },
+  {
+    "text": "Functions",
+    "collapsed": false,
+    "items": [
+      {
+        "text": "checkConstraints",
+        "link": "/api/functions/checkConstraints.md"
+      },
+      {
+        "text": "createSnapshot",
+        "link": "/api/functions/createSnapshot.md"
+      },
+      {
+        "text": "emit",
+        "link": "/api/functions/emit.md"
+      },
+      {
+        "text": "restoreSnapshot",
+        "link": "/api/functions/restoreSnapshot.md"
+      }
+    ]
+  }
+]
