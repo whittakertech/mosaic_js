@@ -1,5 +1,5 @@
 import { DragController } from "./drag";
-import { MosaicState } from "./state";
+import { MosaicState, canTransition } from "./state";
 import type { MosaicSnapshot } from "./snapshot";
 import { restoreSnapshot } from "./snapshot";
 import { emit } from "./events";
@@ -17,14 +17,13 @@ export interface MosaicOptions {
 export class Mosaic {
   public root: HTMLElement;
   public selectors: MosaicOptions["selectors"];
-  private state: MosaicState;
+  private state: MosaicState = MosaicState.Idle;
   public snapshot: MosaicSnapshot | null = null;
   private controller: DragController | null = null;
 
   constructor(options: MosaicOptions) {
     this.root = options.root;
     this.selectors = options.selectors;
-    this.state = MosaicState.Idle;
   }
 
   initialize() {
@@ -64,9 +63,28 @@ export class Mosaic {
     emit("mosaic:destroy");
   }
 
-  public setState(s: MosaicState) {
-    if (this.state === s) return;
-    this.state = s;
-    emit("mosaic:state", { state: s });
+  public setState(next: MosaicState, meta?: unknown): boolean {
+    const prev = this.state;
+
+    if (prev === next) return false;
+
+    if (!canTransition(prev, next)) {
+      emit("mosaic:error", {
+        type: "invalid-transition",
+        from: prev,
+        to: next,
+      });
+      return false;
+    }
+
+    this.state = next;
+
+    emit("mosaic:state", {
+      from: prev,
+      to: next,
+      meta,
+    });
+
+    return true;
   }
 }

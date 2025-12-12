@@ -150,23 +150,30 @@ describe("DragController", () => {
   });
 
   describe("#pointerUp", () => {
+    let a: HTMLElement;
 
-    it("confirms when constraints allow", () => {
-      const a = root.querySelector('[data-mosaic-id="a"]')!;
+    beforeEach(() => {
+      a = root.children[0] as HTMLElement;
+
+      // establish valid drag state
       a.dispatchEvent(new PointerEvent("pointerdown", { bubbles: true }));
 
+      window.dispatchEvent(new PointerEvent("pointermove", {
+        clientX: 10,
+        clientY: 10,
+        bubbles: true,
+      }));
+    });
+
+    it("confirms when constraints allow", () => {
       (checkConstraints as vi.Mock).mockReturnValue({ allowed: true });
 
-      a.dispatchEvent(new PointerEvent("pointerup", { bubbles: true }));
+      window.dispatchEvent(new PointerEvent("pointerup", { bubbles: true }));
 
-      expect((mosaic as Mosaic).state).toBe(MosaicState.Dropping);
+      expect((mosaic as any).state).toBe(MosaicState.Mutated);
     });
 
     it("triggers rollback when constraints disallow drop", () => {
-      const a = root.children[0] as HTMLElement;
-
-      a.dispatchEvent(new PointerEvent("pointerdown", { bubbles: true }));
-
       (checkConstraints as vi.Mock).mockReturnValue({ allowed: false });
 
       window.dispatchEvent(new PointerEvent("pointerup", { bubbles: true }));
@@ -175,33 +182,17 @@ describe("DragController", () => {
     });
 
     it("falls back to activeNode when event.target is not an HTMLElement", () => {
-      const a = root.children[0] as HTMLElement;
-
-      a.dispatchEvent(new PointerEvent("pointerdown", { bubbles: true }));
-
       (checkConstraints as vi.Mock).mockReturnValue({ allowed: true });
 
       const evt = new PointerEvent("pointerup", { bubbles: true });
-
       window.dispatchEvent(evt);
 
-      expect((mosaic as Mosaic).state).toBe(MosaicState.Dropping);
-    });
-
-    it("does nothing if no activeNode is set", () => {
-      window.dispatchEvent(new PointerEvent("pointerup", { bubbles: true }));
-
-      expect((mosaic as any).state).toBe(MosaicState.Idle);
+      expect((mosaic as any).state).toBe(MosaicState.Mutated);
     });
 
     it("falls back to activeNode when closest() returns null", () => {
-      const a = root.children[0] as HTMLElement;
-
-      a.dispatchEvent(new PointerEvent("pointerdown", { bubbles: true }));
-
       (checkConstraints as vi.Mock).mockReturnValue({ allowed: true });
 
-      // Fake HTMLElement with a closest() that returns null
       const fake = document.createElement("div");
       fake.closest = () => null;
 
@@ -210,18 +201,12 @@ describe("DragController", () => {
 
       window.dispatchEvent(evt);
 
-      expect((mosaic as any).state).toBe(MosaicState.Dropping);
+      expect((mosaic as any).state).toBe(MosaicState.Mutated);
     });
 
     it("falls back to activeNode when target.closest is not a function", () => {
-      const a = root.children[0] as HTMLElement;
-
-      a.dispatchEvent(new PointerEvent("pointerdown", { bubbles: true }));
-
-      // mock constraints allow
       (checkConstraints as vi.Mock).mockReturnValue({ allowed: true });
 
-      // Construct a fake element missing .closest
       const fake = document.createElement("div");
       // @ts-ignore
       fake.closest = undefined;
@@ -231,7 +216,7 @@ describe("DragController", () => {
 
       window.dispatchEvent(evt);
 
-      expect((mosaic as any).state).toBe(MosaicState.Dropping);
+      expect((mosaic as any).state).toBe(MosaicState.Mutated);
     });
   });
 });

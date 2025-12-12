@@ -90,13 +90,18 @@ describe("Mosaic", () => {
     const emitSpy = vi.spyOn(events, "emit");
 
     // @ts-ignore private method
+    mosaic.setState(MosaicState.PointerDown);
     mosaic.setState(MosaicState.Dragging);
 
     // @ts-ignore access private field
     expect(mosaic.state).toBe(MosaicState.Dragging);
-    expect(emitSpy).toHaveBeenCalledWith("mosaic:state", {
-      state: MosaicState.Dragging,
-    });
+    expect(emitSpy).toHaveBeenCalledWith(
+      "mosaic:state",
+      expect.objectContaining({
+        from: MosaicState.PointerDown,
+        to: MosaicState.Dragging
+      })
+    );
   });
 
   it("destroy() emits destroy even if no controller was created", () => {

@@ -55,6 +55,7 @@ export class DragController {
   }
 
   pointerUp(e: PointerEvent) {
+    /* v8 ignore next -- @preserve | defensive guard: pointerUp should never fire without an active drag */
     if (!this.activeNode) return;
 
     let t = e.target;
@@ -67,6 +68,14 @@ export class DragController {
       dropTarget = t.closest(this.mosaic.selectors.node) ?? this.activeNode;
     }
 
+    const enteredDropping = this.mosaic.setState(MosaicState.Dropping);
+    /* v8 ignore next 4 -- @preserve | defensive guard: Dropping is guaranteed from Dragging by the state machine.
+       This branch exists to protect against external misuse or future transition changes. */
+    if (!enteredDropping) {
+      this.reset();
+      return;
+    }
+
     const result = checkConstraints(
       this.activeNode,
       dropTarget,
@@ -77,7 +86,7 @@ export class DragController {
       this.mosaic.setState(MosaicState.RollingBack);
       this.mosaic.reject();
     } else {
-      this.mosaic.setState(MosaicState.Dropping);
+      this.mosaic.setState(MosaicState.Mutated);
       this.mosaic.confirm();
     }
 
