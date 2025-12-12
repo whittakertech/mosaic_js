@@ -7,7 +7,7 @@ export interface MosaicSnapshot {
 }
 
 export function createSnapshot(root: HTMLElement): MosaicSnapshot {
-  const nodes = [...root.querySelectorAll("[data-mosaic-id]")];
+  const nodes = Array.from(root.querySelectorAll("[data-mosaic-id]"));
 
   return {
     dom: nodes.map((el) => ({

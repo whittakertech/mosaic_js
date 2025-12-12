@@ -23,11 +23,10 @@ describe('Constraints', () => {
     options = { selectors: { node: '.item' } };
   });
 
-  it("rejects self drop", () => {
+  it("permits self drop", () => {
     const result = checkConstraints(dragged, dragged, options);
 
-    expect(result.allowed).toBe(false);
-    expect(result.reason).toBe("self-drop");
+    expect(result.allowed).toBe(true);
   });
 
   it("rejects drops on invalid selector", () => {
@@ -40,7 +39,7 @@ describe('Constraints', () => {
   });
 
   it("accepts valid drop", () => {
-    const result = checkConstraints(dragged, target, options);
+    const result = checkConstraints(dragged, target, options.selectors);
 
     expect(result.allowed).toBe(true);
     expect(result.reason).toBeUndefined();

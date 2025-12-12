@@ -1,0 +1,8 @@
+[data-mosaic-id] {
+  user-select: none;
+  cursor: grab;
+}
+
+[data-mosaic-id]:active {
+  cursor: grabbing;
+}

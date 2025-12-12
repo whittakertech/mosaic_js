@@ -1,3 +1,4 @@
+import { DragController } from "./drag";
 import { MosaicState } from "./state";
 import type { MosaicSnapshot } from "./snapshot";
 import { restoreSnapshot } from "./snapshot";
@@ -14,10 +15,11 @@ export interface MosaicOptions {
 }
 
 export class Mosaic {
-  private root: HTMLElement;
-  private selectors: MosaicOptions["selectors"];
+  public root: HTMLElement;
+  public selectors: MosaicOptions["selectors"];
   private state: MosaicState;
-  private snapshot: MosaicSnapshot | null = null;
+  public snapshot: MosaicSnapshot | null = null;
+  private controller: DragController | null = null;
 
   constructor(options: MosaicOptions) {
     this.root = options.root;
@@ -26,7 +28,12 @@ export class Mosaic {
   }
 
   initialize() {
-    this.bind();
+    this.controller = new DragController(this);
+
+    this.root.addEventListener("pointerdown", this.controller.pointerDown);
+    window.addEventListener("pointermove", this.controller.pointerMove);
+    window.addEventListener("pointerup", this.controller.pointerUp);
+
     emit("mosaic:init");
   }
 
@@ -36,7 +43,7 @@ export class Mosaic {
   }
 
   reject() {
-    if (this.snapshot == null) return;
+    if (!this.snapshot) return;
 
     restoreSnapshot(this.snapshot);
     emit("mosaic:mutation:rejected");
@@ -46,14 +53,19 @@ export class Mosaic {
   }
 
   destroy() {
+    if (this.controller) {
+      this.root.removeEventListener("pointerdown", this.controller.pointerDown);
+      window.removeEventListener("pointermove", this.controller.pointerMove);
+      window.removeEventListener("pointerup", this.controller.pointerUp);
+      this.controller.reset();
+      this.controller = null;
+    }
+
     emit("mosaic:destroy");
   }
 
-  private bind() {
-    // pointerdown, pointermove, pointerup hooks go here
-  }
-
-  private setState(s: MosaicState) {
+  public setState(s: MosaicState) {
+    if (this.state === s) return;
     this.state = s;
     emit("mosaic:state", { state: s });
   }
