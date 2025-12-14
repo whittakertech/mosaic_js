@@ -26,16 +26,18 @@
   },
   "homepage": "https://mosaicjs.whittakertech.com",
   "scripts": {
-    "build": "tsup src/index.ts --format esm,cjs --dts",
-    "dev": "tsup src/index.ts --format esm --watch",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "npm run typecheck:lib && npm run typecheck:test",
+    "typecheck:lib": "tsc -p tsconfig.lib.json",
+    "typecheck:test": "tsc -p tsconfig.test.json",
+    "lint": "eslint src --ext .ts",
     "test": "vitest",
     "test:ui": "vitest --ui",
     "coverage": "vitest run --coverage",
-    "lint": "eslint src --ext .ts",
     "docs": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:api": "typedoc",
+    "dev": "tsup src/index.ts --format esm --watch",
+    "build": "tsup src/index.ts --format esm,cjs --dts",
     "release": "npm run build && npm publish --access public"
   },
   "keywords": [

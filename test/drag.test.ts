@@ -2,8 +2,14 @@ vi.mock("../src/constraints", () => ({
   checkConstraints: vi.fn()
 }));
 
-import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import type { MockedFunction } from "vitest";
 import { checkConstraints, Mosaic, MosaicState } from "../src";
+
+function mockConstraints(allowed: boolean) {
+  (checkConstraints as MockedFunction<typeof checkConstraints>)
+    .mockReturnValue({ allowed: allowed });
+}
 
 describe("DragController", () => {
   let root: HTMLElement;
@@ -166,7 +172,7 @@ describe("DragController", () => {
     });
 
     it("confirms when constraints allow", () => {
-      (checkConstraints as vi.Mock).mockReturnValue({ allowed: true });
+      mockConstraints(true);
 
       window.dispatchEvent(new PointerEvent("pointerup", { bubbles: true }));
 
@@ -174,7 +180,7 @@ describe("DragController", () => {
     });
 
     it("triggers rollback when constraints disallow drop", () => {
-      (checkConstraints as vi.Mock).mockReturnValue({ allowed: false });
+      mockConstraints(false);
 
       window.dispatchEvent(new PointerEvent("pointerup", { bubbles: true }));
 
@@ -182,7 +188,7 @@ describe("DragController", () => {
     });
 
     it("falls back to activeNode when event.target is not an HTMLElement", () => {
-      (checkConstraints as vi.Mock).mockReturnValue({ allowed: true });
+      mockConstraints(true);
 
       const evt = new PointerEvent("pointerup", { bubbles: true });
       window.dispatchEvent(evt);
@@ -191,7 +197,7 @@ describe("DragController", () => {
     });
 
     it("falls back to activeNode when closest() returns null", () => {
-      (checkConstraints as vi.Mock).mockReturnValue({ allowed: true });
+      mockConstraints(true);
 
       const fake = document.createElement("div");
       fake.closest = () => null;
@@ -205,7 +211,7 @@ describe("DragController", () => {
     });
 
     it("falls back to activeNode when target.closest is not a function", () => {
-      (checkConstraints as vi.Mock).mockReturnValue({ allowed: true });
+      mockConstraints(true);
 
       const fake = document.createElement("div");
       // @ts-ignore
