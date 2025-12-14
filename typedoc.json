@@ -1,0 +1,28 @@
+{
+  "docsRoot": "./docs",
+  "entryFileName": "index",
+  "entryPoints": ["src/index.ts"],
+  "excludePrivate": true,
+  "excludeProtected": true,
+  "excludeExternals": true,
+  "indexFormat": "htmlTable",
+  "lang": "en",
+  "navigation": {
+    "includeCategories": true,
+    "includeFolders": true,
+    "includeGroups": true
+  },
+  "out": "docs/api",
+  "plugin": ["typedoc-plugin-markdown", "typedoc-vitepress-theme"],
+  "readme": "none",
+  "router": "kind",
+  "sidebar": {
+    "autoConfiguration": true,
+    "collapsed": false,
+    "format": "vitepress",
+    "pretty": true
+  },
+  "theme": "markdown",
+  "tsconfig": "tsconfig.lib.json",
+  "useCodeBlocks": true
+}

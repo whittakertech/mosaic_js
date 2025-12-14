@@ -29,7 +29,7 @@ describe("emit()", () => {
 
     emit("mosaic:data", detail)
 
-    const eventArg = spy.mock.calls[0][0];
+    const eventArg = spy.mock.calls[0][0] as CustomEvent;
     expect(eventArg.detail).toEqual(detail);
   });
 

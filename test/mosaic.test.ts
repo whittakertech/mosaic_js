@@ -90,12 +90,40 @@ describe("Mosaic", () => {
     const emitSpy = vi.spyOn(events, "emit");
 
     // @ts-ignore private method
+    mosaic.setState(MosaicState.PointerDown);
     mosaic.setState(MosaicState.Dragging);
 
     // @ts-ignore access private field
     expect(mosaic.state).toBe(MosaicState.Dragging);
-    expect(emitSpy).toHaveBeenCalledWith("mosaic:state", {
-      state: MosaicState.Dragging,
-    });
+    expect(emitSpy).toHaveBeenCalledWith(
+      "mosaic:state",
+      expect.objectContaining({
+        from: MosaicState.PointerDown,
+        to: MosaicState.Dragging
+      })
+    );
+  });
+
+  it("destroy() emits destroy even if no controller was created", () => {
+    const localRoot = document.createElement("div");
+    const m = new Mosaic({ root: localRoot, selectors: { node: ".x" } });
+
+    const fn = vi.fn();
+    window.addEventListener("mosaic:destroy", fn);
+
+    m.destroy();
+
+    expect(fn).toHaveBeenCalled();
+  });
+
+  it("setState() returns early when new state equals current state", () => {
+    const fn = vi.fn();
+    window.addEventListener("mosaic:state", fn);
+
+    (mosaic as Mosaic).setState(MosaicState.PointerDown);
+    expect(fn).toHaveBeenCalledTimes(1);
+
+    (mosaic as Mosaic).setState(MosaicState.PointerDown);
+    expect(fn).toHaveBeenCalledTimes(1);
   });
 });

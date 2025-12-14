@@ -1,3 +1,5 @@
+import type { MosaicOptions } from "./mosaic";
+
 export interface ConstraintResult {
   allowed: boolean;
   reason?: string;
@@ -6,13 +8,13 @@ export interface ConstraintResult {
 export function checkConstraints(
   dragged: HTMLElement,
   target: HTMLElement,
-  options: MosaicOptions
+  selectors: MosaicOptions["selectors"]
 ): ConstraintResult {
   if (dragged === target) {
-    return { allowed: false, reason: "self-drop" };
+    return { allowed: true };
   }
 
-  if (!target.matches(options.selectors.node)) {
+  if (!target.matches(selectors.node)) {
     return { allowed: false, reason: "invalid-target" };
   }
 

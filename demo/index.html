@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>MosaicJS Demo</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <div id="root">
+    <div class="item" data-mosaic-id="a">A</div>
+    <div class="item" data-mosaic-id="b">B</div>
+    <div class="item" data-mosaic-id="c">C</div>
+    <div class="item" data-mosaic-id="d">D</div>
+  </div>
+
+  <script type="module">
+    import { Mosaic } from '../dist/index.js';
+
+    const root = document.getElementById('root');
+
+    const mosaic = new Mosaic({
+      root,
+      selectors: { node: '.item' }
+    });
+
+    mosaic.initialize();
+  </script>
+
+</body>
+</html>

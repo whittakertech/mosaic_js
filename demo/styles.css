@@ -1,0 +1,23 @@
+[data-mosaic-id] {
+  user-select: none;
+  cursor: grab;
+}
+
+[data-mosaic-id]:active {
+  cursor: grabbing;
+}
+
+.mosaic--dragging {
+  opacity: 0.6;
+  cursor: grabbing;
+  transform: scale(1.02);
+}
+
+.mosaic--ghost {
+  opacity: 0.75;
+  transform-origin: top left;
+  pointer-events: none;
+  cursor: grabbing;
+  border-radius: 4px;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.15));
+}

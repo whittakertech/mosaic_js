@@ -1,12 +1,12 @@
 # Getting Started
 
-Install Mosaic:
+Install MosaicJS:
 
 ```bash
 npm install @whittakertech/mosaic
 ```
 
-Create a Mosaic instance:
+Create a MosaicJS instance:
 
 ```ts
 import { Mosaic } from "@whittakertech/mosaic";
@@ -21,7 +21,7 @@ const mosaic = new Mosaic({
 mosaic.initialize();
 ```
 
-Mosaic manages:
+MosaicJS manages:
 
 - drag lifecycle
 - DOM snapshots

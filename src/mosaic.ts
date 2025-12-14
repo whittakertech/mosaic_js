@@ -1,4 +1,5 @@
-import { MosaicState } from "./state";
+import { DragController } from "./drag";
+import { MosaicState, canTransition } from "./state";
 import type { MosaicSnapshot } from "./snapshot";
 import { restoreSnapshot } from "./snapshot";
 import { emit } from "./events";
@@ -13,30 +14,88 @@ export interface MosaicOptions {
   };
 }
 
+/**
+ * Mosaic is the public controller for an event-driven drag-and-drop system.
+ *
+ * It manages:
+ * - Pointer lifecycle
+ * - DOM snapshotting and rollback
+ * - Deterministic state transitions
+ * - Event emission for external observers
+ *
+ * Consumers should:
+ * 1. Instantiate Mosaic with a root element
+ * 2. Call `initialize()`
+ * 3. Listen for `mosaic:*` events
+ *
+ * Direct state manipulation is intentionally restricted.
+ *
+ * @example
+ * ```ts
+ * const mosaic = new Mosaic({
+ *   root: document.querySelector("#list"),
+ *   selectors: { node: ".item" }
+ * });
+ *
+ * mosaic.initialize();
+ *
+ * window.addEventListener("mosaic:mutation:confirmed", () => {
+ *   console.log("Order updated");
+ * });
+ * ```
+ */
 export class Mosaic {
-  private root: HTMLElement;
-  private selectors: MosaicOptions["selectors"];
-  private state: MosaicState;
-  private snapshot: MosaicSnapshot | null = null;
+  public root: HTMLElement;
+  public selectors: MosaicOptions["selectors"];
+  private state: MosaicState = MosaicState.Idle;
+  public snapshot: MosaicSnapshot | null = null;
+  private controller: DragController | null = null;
 
   constructor(options: MosaicOptions) {
     this.root = options.root;
     this.selectors = options.selectors;
-    this.state = MosaicState.Idle;
   }
 
+  /**
+   * Initializes the Mosaic instance.
+   *
+   * This attaches all required pointer event listeners and enables
+   * drag-and-drop behavior on the root element.
+   *
+   * Must be called exactly once before user interaction.
+   * Emits the `mosaic:init` event.
+   */
   initialize() {
-    this.bind();
+    this.controller = new DragController(this);
+
+    this.root.addEventListener("pointerdown", this.controller.pointerDown);
+    window.addEventListener("pointermove", this.controller.pointerMove);
+    window.addEventListener("pointerup", this.controller.pointerUp);
+
     emit("mosaic:init");
   }
 
+  /**
+   * Confirms the current mutation.
+   *
+   * This clears the active snapshot and finalizes the drag operation.
+   * Called automatically after constraints allow a drop.
+   *
+   * Emits `mosaic:mutation:confirmed`.
+   */
   confirm() {
     this.snapshot = null;
     emit("mosaic:mutation:confirmed");
   }
 
+  /**
+   * Rejects the current mutation and restores the previous DOM state.
+   *
+   * If no snapshot exists, this method is a no-op.
+   * Emits `mosaic:mutation:rejected` and `mosaic:rollback`.
+   */
   reject() {
-    if (this.snapshot == null) return;
+    if (!this.snapshot) return;
 
     restoreSnapshot(this.snapshot);
     emit("mosaic:mutation:rejected");
@@ -45,16 +104,61 @@ export class Mosaic {
     this.snapshot = null;
   }
 
+  /**
+   * Tears down the Mosaic instance and removes all event listeners.
+   *
+   * After calling destroy(), the instance is inert and should be discarded.
+   * Emits `mosaic:destroy`.
+   */
   destroy() {
+    if (this.controller) {
+      this.root.removeEventListener("pointerdown", this.controller.pointerDown);
+      window.removeEventListener("pointermove", this.controller.pointerMove);
+      window.removeEventListener("pointerup", this.controller.pointerUp);
+      this.controller.reset();
+      this.controller = null;
+    }
+
     emit("mosaic:destroy");
   }
 
-  private bind() {
-    // pointerdown, pointermove, pointerup hooks go here
-  }
+  /**
+   * Attempts to transition the Mosaic instance to a new lifecycle state.
+   *
+   * State transitions are validated against the internal deterministic
+   * state machine. Invalid transitions are rejected.
+   *
+   * @param next - The target state
+   * @param meta - Optional metadata forwarded with the state event
+   *
+   * @returns `true` if the transition was applied, `false` otherwise
+   *
+   * Emits:
+   * - `mosaic:state` on success
+   * - `mosaic:error` on invalid transition
+   */
+  public setState(next: MosaicState, meta?: unknown): boolean {
+    const prev = this.state;
 
-  private setState(s: MosaicState) {
-    this.state = s;
-    emit("mosaic:state", { state: s });
+    if (prev === next) return false;
+
+    if (!canTransition(prev, next)) {
+      emit("mosaic:error", {
+        type: "invalid-transition",
+        from: prev,
+        to: next,
+      });
+      return false;
+    }
+
+    this.state = next;
+
+    emit("mosaic:state", {
+      from: prev,
+      to: next,
+      meta,
+    });
+
+    return true;
   }
 }
