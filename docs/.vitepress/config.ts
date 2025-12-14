@@ -5,6 +5,7 @@ export default defineConfig({
   lang: 'en-US',
   title: 'MosaicJS',
   description: 'Event-driven drag-and-drop engine for WhittakerTech',
+  base: '/',
 
   themeConfig: {
     nav: [
