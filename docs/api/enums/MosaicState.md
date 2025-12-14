@@ -2,9 +2,24 @@
 
 # Enumeration: MosaicState
 
-Defined in: [state.ts:1](https://github.com/whittakertech/mosaic_js/blob/928987df98a79ac2751bd91fee20975b1e81e571/src/state.ts#L1)
+Defined in: [state.ts:5](https://github.com/whittakertech/mosaic_js/blob/e0e7c26a87608c5b9c3aa6dde0292c1b0fac627f/src/state.ts#L5)
+
+Represents the current interaction lifecycle state of a MosaicJS instance.
+States are mutually exclusive and transition deterministically.
 
 ## Enumeration Members
+
+### Destroyed
+
+```ts
+Destroyed: "destroyed";
+```
+
+Defined in: [state.ts:25](https://github.com/whittakertech/mosaic_js/blob/e0e7c26a87608c5b9c3aa6dde0292c1b0fac627f/src/state.ts#L25)
+
+Instance has been destroyed and will not process further events
+
+***
 
 ### Dragging
 
@@ -12,7 +27,9 @@ Defined in: [state.ts:1](https://github.com/whittakertech/mosaic_js/blob/928987d
 Dragging: "dragging";
 ```
 
-Defined in: [state.ts:4](https://github.com/whittakertech/mosaic_js/blob/928987df98a79ac2751bd91fee20975b1e81e571/src/state.ts#L4)
+Defined in: [state.ts:13](https://github.com/whittakertech/mosaic_js/blob/e0e7c26a87608c5b9c3aa6dde0292c1b0fac627f/src/state.ts#L13)
+
+Active drag operation in progress
 
 ***
 
@@ -22,17 +39,9 @@ Defined in: [state.ts:4](https://github.com/whittakertech/mosaic_js/blob/928987d
 Dropping: "dropping";
 ```
 
-Defined in: [state.ts:6](https://github.com/whittakertech/mosaic_js/blob/928987df98a79ac2751bd91fee20975b1e81e571/src/state.ts#L6)
+Defined in: [state.ts:16](https://github.com/whittakertech/mosaic_js/blob/e0e7c26a87608c5b9c3aa6dde0292c1b0fac627f/src/state.ts#L16)
 
-***
-
-### Hovering
-
-```ts
-Hovering: "hovering";
-```
-
-Defined in: [state.ts:5](https://github.com/whittakertech/mosaic_js/blob/928987df98a79ac2751bd91fee20975b1e81e571/src/state.ts#L5)
+Pointer released; evaluating constraints
 
 ***
 
@@ -42,17 +51,21 @@ Defined in: [state.ts:5](https://github.com/whittakertech/mosaic_js/blob/928987d
 Idle: "idle";
 ```
 
-Defined in: [state.ts:2](https://github.com/whittakertech/mosaic_js/blob/928987df98a79ac2751bd91fee20975b1e81e571/src/state.ts#L2)
+Defined in: [state.ts:7](https://github.com/whittakertech/mosaic_js/blob/e0e7c26a87608c5b9c3aa6dde0292c1b0fac627f/src/state.ts#L7)
+
+No active interaction
 
 ***
 
-### Pending
+### Mutated
 
 ```ts
-Pending: "pending";
+Mutated: "mutated";
 ```
 
-Defined in: [state.ts:7](https://github.com/whittakertech/mosaic_js/blob/928987df98a79ac2751bd91fee20975b1e81e571/src/state.ts#L7)
+Defined in: [state.ts:19](https://github.com/whittakertech/mosaic_js/blob/e0e7c26a87608c5b9c3aa6dde0292c1b0fac627f/src/state.ts#L19)
+
+A mutation has been applied and is awaiting confirmation
 
 ***
 
@@ -62,7 +75,9 @@ Defined in: [state.ts:7](https://github.com/whittakertech/mosaic_js/blob/928987d
 PointerDown: "pointerdown";
 ```
 
-Defined in: [state.ts:3](https://github.com/whittakertech/mosaic_js/blob/928987df98a79ac2751bd91fee20975b1e81e571/src/state.ts#L3)
+Defined in: [state.ts:10](https://github.com/whittakertech/mosaic_js/blob/e0e7c26a87608c5b9c3aa6dde0292c1b0fac627f/src/state.ts#L10)
+
+Pointer is down but no drag threshold has been exceeded
 
 ***
 
@@ -72,4 +87,6 @@ Defined in: [state.ts:3](https://github.com/whittakertech/mosaic_js/blob/928987d
 RollingBack: "rollback";
 ```
 
-Defined in: [state.ts:8](https://github.com/whittakertech/mosaic_js/blob/928987df98a79ac2751bd91fee20975b1e81e571/src/state.ts#L8)
+Defined in: [state.ts:22](https://github.com/whittakertech/mosaic_js/blob/e0e7c26a87608c5b9c3aa6dde0292c1b0fac627f/src/state.ts#L22)
+
+Restoring the previous state after a rejected mutation

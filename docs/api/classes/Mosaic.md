@@ -2,7 +2,37 @@
 
 # Class: Mosaic
 
-Defined in: [mosaic.ts:17](https://github.com/whittakertech/mosaic_js/blob/928987df98a79ac2751bd91fee20975b1e81e571/src/mosaic.ts#L17)
+Defined in: [mosaic.ts:47](https://github.com/whittakertech/mosaic_js/blob/e0e7c26a87608c5b9c3aa6dde0292c1b0fac627f/src/mosaic.ts#L47)
+
+Mosaic is the public controller for an event-driven drag-and-drop system.
+
+It manages:
+- Pointer lifecycle
+- DOM snapshotting and rollback
+- Deterministic state transitions
+- Event emission for external observers
+
+Consumers should:
+1. Instantiate Mosaic with a root element
+2. Call `initialize()`
+3. Listen for `mosaic:*` events
+
+Direct state manipulation is intentionally restricted.
+
+## Example
+
+```ts
+const mosaic = new Mosaic({
+  root: document.querySelector("#list"),
+  selectors: { node: ".item" }
+});
+
+mosaic.initialize();
+
+window.addEventListener("mosaic:mutation:confirmed", () => {
+  console.log("Order updated");
+});
+```
 
 ## Constructors
 
@@ -12,7 +42,7 @@ Defined in: [mosaic.ts:17](https://github.com/whittakertech/mosaic_js/blob/92898
 new Mosaic(options): Mosaic;
 ```
 
-Defined in: [mosaic.ts:24](https://github.com/whittakertech/mosaic_js/blob/928987df98a79ac2751bd91fee20975b1e81e571/src/mosaic.ts#L24)
+Defined in: [mosaic.ts:54](https://github.com/whittakertech/mosaic_js/blob/e0e7c26a87608c5b9c3aa6dde0292c1b0fac627f/src/mosaic.ts#L54)
 
 #### Parameters
 
@@ -32,7 +62,7 @@ Defined in: [mosaic.ts:24](https://github.com/whittakertech/mosaic_js/blob/92898
 root: HTMLElement;
 ```
 
-Defined in: [mosaic.ts:18](https://github.com/whittakertech/mosaic_js/blob/928987df98a79ac2751bd91fee20975b1e81e571/src/mosaic.ts#L18)
+Defined in: [mosaic.ts:48](https://github.com/whittakertech/mosaic_js/blob/e0e7c26a87608c5b9c3aa6dde0292c1b0fac627f/src/mosaic.ts#L48)
 
 ***
 
@@ -42,7 +72,7 @@ Defined in: [mosaic.ts:18](https://github.com/whittakertech/mosaic_js/blob/92898
 selectors: object;
 ```
 
-Defined in: [mosaic.ts:19](https://github.com/whittakertech/mosaic_js/blob/928987df98a79ac2751bd91fee20975b1e81e571/src/mosaic.ts#L19)
+Defined in: [mosaic.ts:49](https://github.com/whittakertech/mosaic_js/blob/e0e7c26a87608c5b9c3aa6dde0292c1b0fac627f/src/mosaic.ts#L49)
 
 #### children?
 
@@ -76,7 +106,7 @@ node: string;
 snapshot: MosaicSnapshot | null = null;
 ```
 
-Defined in: [mosaic.ts:21](https://github.com/whittakertech/mosaic_js/blob/928987df98a79ac2751bd91fee20975b1e81e571/src/mosaic.ts#L21)
+Defined in: [mosaic.ts:51](https://github.com/whittakertech/mosaic_js/blob/e0e7c26a87608c5b9c3aa6dde0292c1b0fac627f/src/mosaic.ts#L51)
 
 ## Methods
 
@@ -86,7 +116,14 @@ Defined in: [mosaic.ts:21](https://github.com/whittakertech/mosaic_js/blob/92898
 confirm(): void;
 ```
 
-Defined in: [mosaic.ts:40](https://github.com/whittakertech/mosaic_js/blob/928987df98a79ac2751bd91fee20975b1e81e571/src/mosaic.ts#L40)
+Defined in: [mosaic.ts:86](https://github.com/whittakertech/mosaic_js/blob/e0e7c26a87608c5b9c3aa6dde0292c1b0fac627f/src/mosaic.ts#L86)
+
+Confirms the current mutation.
+
+This clears the active snapshot and finalizes the drag operation.
+Called automatically after constraints allow a drop.
+
+Emits `mosaic:mutation:confirmed`.
 
 #### Returns
 
@@ -100,7 +137,12 @@ Defined in: [mosaic.ts:40](https://github.com/whittakertech/mosaic_js/blob/92898
 destroy(): void;
 ```
 
-Defined in: [mosaic.ts:55](https://github.com/whittakertech/mosaic_js/blob/928987df98a79ac2751bd91fee20975b1e81e571/src/mosaic.ts#L55)
+Defined in: [mosaic.ts:113](https://github.com/whittakertech/mosaic_js/blob/e0e7c26a87608c5b9c3aa6dde0292c1b0fac627f/src/mosaic.ts#L113)
+
+Tears down the Mosaic instance and removes all event listeners.
+
+After calling destroy(), the instance is inert and should be discarded.
+Emits `mosaic:destroy`.
 
 #### Returns
 
@@ -114,7 +156,15 @@ Defined in: [mosaic.ts:55](https://github.com/whittakertech/mosaic_js/blob/92898
 initialize(): void;
 ```
 
-Defined in: [mosaic.ts:30](https://github.com/whittakertech/mosaic_js/blob/928987df98a79ac2751bd91fee20975b1e81e571/src/mosaic.ts#L30)
+Defined in: [mosaic.ts:68](https://github.com/whittakertech/mosaic_js/blob/e0e7c26a87608c5b9c3aa6dde0292c1b0fac627f/src/mosaic.ts#L68)
+
+Initializes the Mosaic instance.
+
+This attaches all required pointer event listeners and enables
+drag-and-drop behavior on the root element.
+
+Must be called exactly once before user interaction.
+Emits the `mosaic:init` event.
 
 #### Returns
 
@@ -128,7 +178,12 @@ Defined in: [mosaic.ts:30](https://github.com/whittakertech/mosaic_js/blob/92898
 reject(): void;
 ```
 
-Defined in: [mosaic.ts:45](https://github.com/whittakertech/mosaic_js/blob/928987df98a79ac2751bd91fee20975b1e81e571/src/mosaic.ts#L45)
+Defined in: [mosaic.ts:97](https://github.com/whittakertech/mosaic_js/blob/e0e7c26a87608c5b9c3aa6dde0292c1b0fac627f/src/mosaic.ts#L97)
+
+Rejects the current mutation and restores the previous DOM state.
+
+If no snapshot exists, this method is a no-op.
+Emits `mosaic:mutation:rejected` and `mosaic:rollback`.
 
 #### Returns
 
@@ -139,17 +194,36 @@ Defined in: [mosaic.ts:45](https://github.com/whittakertech/mosaic_js/blob/92898
 ### setState()
 
 ```ts
-setState(s): void;
+setState(next, meta?): boolean;
 ```
 
-Defined in: [mosaic.ts:67](https://github.com/whittakertech/mosaic_js/blob/928987df98a79ac2751bd91fee20975b1e81e571/src/mosaic.ts#L67)
+Defined in: [mosaic.ts:140](https://github.com/whittakertech/mosaic_js/blob/e0e7c26a87608c5b9c3aa6dde0292c1b0fac627f/src/mosaic.ts#L140)
+
+Attempts to transition the Mosaic instance to a new lifecycle state.
+
+State transitions are validated against the internal deterministic
+state machine. Invalid transitions are rejected.
 
 #### Parameters
 
-##### s
+##### next
 
 [`MosaicState`](../enums/MosaicState.md)
 
+The target state
+
+##### meta?
+
+`unknown`
+
+Optional metadata forwarded with the state event
+
 #### Returns
 
-`void`
+`boolean`
+
+`true` if the transition was applied, `false` otherwise
+
+Emits:
+- `mosaic:state` on success
+- `mosaic:error` on invalid transition

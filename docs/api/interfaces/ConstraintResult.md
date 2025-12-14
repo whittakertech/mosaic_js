@@ -2,7 +2,7 @@
 
 # Interface: ConstraintResult
 
-Defined in: [constraints.ts:3](https://github.com/whittakertech/mosaic_js/blob/928987df98a79ac2751bd91fee20975b1e81e571/src/constraints.ts#L3)
+Defined in: [constraints.ts:3](https://github.com/whittakertech/mosaic_js/blob/e0e7c26a87608c5b9c3aa6dde0292c1b0fac627f/src/constraints.ts#L3)
 
 ## Properties
 
@@ -12,7 +12,7 @@ Defined in: [constraints.ts:3](https://github.com/whittakertech/mosaic_js/blob/9
 allowed: boolean;
 ```
 
-Defined in: [constraints.ts:4](https://github.com/whittakertech/mosaic_js/blob/928987df98a79ac2751bd91fee20975b1e81e571/src/constraints.ts#L4)
+Defined in: [constraints.ts:4](https://github.com/whittakertech/mosaic_js/blob/e0e7c26a87608c5b9c3aa6dde0292c1b0fac627f/src/constraints.ts#L4)
 
 ***
 
@@ -22,4 +22,4 @@ Defined in: [constraints.ts:4](https://github.com/whittakertech/mosaic_js/blob/9
 optional reason: string;
 ```
 
-Defined in: [constraints.ts:5](https://github.com/whittakertech/mosaic_js/blob/928987df98a79ac2751bd91fee20975b1e81e571/src/constraints.ts#L5)
+Defined in: [constraints.ts:5](https://github.com/whittakertech/mosaic_js/blob/e0e7c26a87608c5b9c3aa6dde0292c1b0fac627f/src/constraints.ts#L5)

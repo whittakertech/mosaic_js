@@ -2,7 +2,7 @@
 
 # Interface: MosaicOptions
 
-Defined in: [mosaic.ts:7](https://github.com/whittakertech/mosaic_js/blob/928987df98a79ac2751bd91fee20975b1e81e571/src/mosaic.ts#L7)
+Defined in: [mosaic.ts:7](https://github.com/whittakertech/mosaic_js/blob/e0e7c26a87608c5b9c3aa6dde0292c1b0fac627f/src/mosaic.ts#L7)
 
 ## Properties
 
@@ -12,7 +12,7 @@ Defined in: [mosaic.ts:7](https://github.com/whittakertech/mosaic_js/blob/928987
 root: HTMLElement;
 ```
 
-Defined in: [mosaic.ts:8](https://github.com/whittakertech/mosaic_js/blob/928987df98a79ac2751bd91fee20975b1e81e571/src/mosaic.ts#L8)
+Defined in: [mosaic.ts:8](https://github.com/whittakertech/mosaic_js/blob/e0e7c26a87608c5b9c3aa6dde0292c1b0fac627f/src/mosaic.ts#L8)
 
 ***
 
@@ -22,7 +22,7 @@ Defined in: [mosaic.ts:8](https://github.com/whittakertech/mosaic_js/blob/928987
 selectors: object;
 ```
 
-Defined in: [mosaic.ts:9](https://github.com/whittakertech/mosaic_js/blob/928987df98a79ac2751bd91fee20975b1e81e571/src/mosaic.ts#L9)
+Defined in: [mosaic.ts:9](https://github.com/whittakertech/mosaic_js/blob/e0e7c26a87608c5b9c3aa6dde0292c1b0fac627f/src/mosaic.ts#L9)
 
 #### children?
 

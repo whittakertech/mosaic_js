@@ -36,5 +36,6 @@ export const MOSAIC_TRANSITIONS = {
 } as const satisfies Record<MosaicState, readonly MosaicState[]>;
 
 export function canTransition(from: MosaicState, to: MosaicState): boolean {
-  return MOSAIC_TRANSITIONS[from].includes(to);
+  // TS cannot infer includes() on readonly tuple unions; safe cast
+  return (MOSAIC_TRANSITIONS[from] as readonly MosaicState[]).includes(to);
 }

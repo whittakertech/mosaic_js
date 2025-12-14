@@ -9,7 +9,7 @@ function checkConstraints(
    selectors): ConstraintResult;
 ```
 
-Defined in: [constraints.ts:8](https://github.com/whittakertech/mosaic_js/blob/928987df98a79ac2751bd91fee20975b1e81e571/src/constraints.ts#L8)
+Defined in: [constraints.ts:8](https://github.com/whittakertech/mosaic_js/blob/e0e7c26a87608c5b9c3aa6dde0292c1b0fac627f/src/constraints.ts#L8)
 
 ## Parameters
 

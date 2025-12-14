@@ -1,5 +1,42 @@
 # Changelog
 
+## 0.1.0 — 2025-12-14
+
+First stable release of **MosaicJS**, delivering a complete, production-ready drag-and-drop engine core.
+
+### Added
+- Fully implemented pointer-driven drag lifecycle via `DragController`.
+- Deterministic state machine with enforced transitions (`MosaicState`, `canTransition`).
+- Snapshot + rollback guarantees for all drag operations.
+- Constraint evaluation on drop with automatic rejection and restoration.
+- Structured event emission for all lifecycle changes:
+  - `mosaic:init`
+  - `mosaic:state`
+  - `mosaic:mutation:confirmed`
+  - `mosaic:mutation:rejected`
+  - `mosaic:rollback`
+  - `mosaic:destroy`
+- Visual ghost element for drag feedback.
+- Public `Mosaic` controller API with strict lifecycle boundaries.
+- Comprehensive TypeDoc-generated API documentation.
+- VitePress documentation site with guides and architecture notes.
+- 100% test coverage across all modules (Vitest + jsdom).
+- Deterministic behavior validated through exhaustive unit tests.
+
+### Changed
+- Promoted project from alpha substrate to a complete drag-and-drop engine.
+- Replaced implicit DOM mutation patterns with explicit, reversible operations.
+- Clarified drag lifecycle semantics (`Dropping` → `Mutated`).
+
+### Notes
+This release establishes MosaicJS as a **correctness-first drag-and-drop engine**.
+
+Advanced features such as hover visualization, grouping, nested drag, and plugin APIs are intentionally deferred to 
+future releases to preserve architectural clarity.
+
+MosaicJS v0.1.0 is suitable for production use where **predictability, rollback safety, and state observability** are 
+required.
+
 ## 0.0.0-alpha — 2025-12-11
 
 Initial alpha release of **Mosaic**, the event-driven, snapshot-based drag-and-drop engine.
@@ -17,5 +54,6 @@ Initial alpha release of **Mosaic**, the event-driven, snapshot-based drag-and-d
 
 ### Notes
 This is an **alpha foundation**.  
-The drag lifecycle is not yet implemented; Mosaic currently offers a complete validated substrate for drag-and-drop behavior, but **no actual pointer-driven movement**.  
+The drag lifecycle is not yet implemented; Mosaic currently offers a complete validated substrate for drag-and-drop 
+behavior, but **no actual pointer-driven movement**.  
 Feature development for 0.1.0 will begin immediately.

@@ -38,9 +38,23 @@
     ]
   },
   {
+    "text": "Variables",
+    "collapsed": false,
+    "items": [
+      {
+        "text": "MOSAIC_TRANSITIONS",
+        "link": "/api/variables/MOSAIC_TRANSITIONS.md"
+      }
+    ]
+  },
+  {
     "text": "Functions",
     "collapsed": false,
     "items": [
+      {
+        "text": "canTransition",
+        "link": "/api/functions/canTransition.md"
+      },
       {
         "text": "checkConstraints",
         "link": "/api/functions/checkConstraints.md"

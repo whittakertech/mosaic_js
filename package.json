@@ -2,37 +2,47 @@
   "name": "@whittakertech/mosaic",
   "author": "WhittakerTech",
   "version": "0.1.0",
-  "description": "Event-driven drag-and-drop orchestration engine for WhittakerTech Mosaic",
+  "description": "Event-driven, deterministic drag-and-drop engine with constraint validation and rollback",
   "license": "MIT",
   "type": "module",
   "main": "./dist/index.cjs",
-  "module": ".dist/index.js",
+  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "sideEffects": false,
   "exports": {
     ".": {
+      "types": "./dist/index.d.js",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
     }
   },
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/whittakertech/mosaic_js"
+  },
+  "bugs": {
+    "url": "https://github.com/whittakertech/mosaic_js/issues"
+  },
+  "homepage": "https://mosaicjs.whittakertech.com",
   "scripts": {
     "build": "tsup src/index.ts --format esm,cjs --dts",
     "dev": "tsup src/index.ts --format esm --watch",
     "typecheck": "tsc --noEmit",
-    "release": "npm publish --access public",
     "test": "vitest",
     "test:ui": "vitest --ui",
     "coverage": "vitest run --coverage",
     "lint": "eslint src --ext .ts",
     "docs": "vitepress dev docs",
     "docs:build": "vitepress build docs",
-    "docs:api": "typedoc"
+    "docs:api": "typedoc",
+    "release": "npm run build && npm publish --access public"
   },
   "keywords": [
     "drag-drop",
     "ui-engine",
+    "state-machine",
+    "event-driven",
     "mosaic",
     "whittakertech"
   ],

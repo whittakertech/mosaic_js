@@ -18,7 +18,8 @@
 </td>
 <td>
 
-&hyphen;
+Represents the current interaction lifecycle state of a MosaicJS instance.
+States are mutually exclusive and transition deterministically.
 
 </td>
 </tr>
@@ -43,7 +44,35 @@
 </td>
 <td>
 
-&hyphen;
+Mosaic is the public controller for an event-driven drag-and-drop system.
+
+It manages:
+- Pointer lifecycle
+- DOM snapshotting and rollback
+- Deterministic state transitions
+- Event emission for external observers
+
+Consumers should:
+1. Instantiate Mosaic with a root element
+2. Call `initialize()`
+3. Listen for `mosaic:*` events
+
+Direct state manipulation is intentionally restricted.
+
+**Example**
+
+```ts
+const mosaic = new Mosaic({
+  root: document.querySelector("#list"),
+  selectors: { node: ".item" }
+});
+
+mosaic.initialize();
+
+window.addEventListener("mosaic:mutation:confirmed", () => {
+  console.log("Order updated");
+});
+```
 
 </td>
 </tr>
@@ -99,6 +128,31 @@
 </tbody>
 </table>
 
+## Variables
+
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+[MOSAIC\_TRANSITIONS](variables/MOSAIC_TRANSITIONS.md)
+
+</td>
+<td>
+
+&hyphen;
+
+</td>
+</tr>
+</tbody>
+</table>
+
 ## Functions
 
 <table>
@@ -109,6 +163,18 @@
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+
+[canTransition](functions/canTransition.md)
+
+</td>
+<td>
+
+&hyphen;
+
+</td>
+</tr>
 <tr>
 <td>
 

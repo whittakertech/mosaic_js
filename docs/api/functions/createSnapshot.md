@@ -6,7 +6,7 @@
 function createSnapshot(root): MosaicSnapshot;
 ```
 
-Defined in: [snapshot.ts:9](https://github.com/whittakertech/mosaic_js/blob/928987df98a79ac2751bd91fee20975b1e81e571/src/snapshot.ts#L9)
+Defined in: [snapshot.ts:9](https://github.com/whittakertech/mosaic_js/blob/e0e7c26a87608c5b9c3aa6dde0292c1b0fac627f/src/snapshot.ts#L9)
 
 ## Parameters
 
