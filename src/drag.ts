@@ -3,6 +3,7 @@ import { checkConstraints } from "./constraints";
 import { MosaicState } from "./state";
 import type { Mosaic } from "./mosaic";
 import { Ghost } from "./ghost";
+import { applyClasses, removeClasses } from "./css";
 
 export class DragController {
   private mosaic: Mosaic;
@@ -23,10 +24,15 @@ export class DragController {
     if (!(node instanceof HTMLElement)) return;
 
     this.activeNode = node;
-    this.activeNode.classList.add("mosaic--dragging");
+    applyClasses(this.activeNode, this.mosaic.cssClasses.active);
     this.mosaic.snapshot = createSnapshot(this.mosaic.root);
     this.mosaic.setState(MosaicState.PointerDown);
-    this.ghost.create(this.activeNode, e.clientX, e.clientY);
+    this.ghost.create(
+      this.mosaic.cssClasses,
+      this.activeNode,
+      e.clientX,
+      e.clientY
+    );
   }
 
   pointerMove(e: PointerEvent) {
@@ -96,7 +102,7 @@ export class DragController {
   reset() {
     this.ghost.remove();
     if (this.activeNode) {
-      this.activeNode.classList.remove("mosaic--dragging");
+      removeClasses(this.activeNode, this.mosaic.cssClasses.active);
     }
     this.activeNode = null;
   }

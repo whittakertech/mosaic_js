@@ -3,6 +3,8 @@ import { MosaicState, canTransition } from "./state";
 import type { MosaicSnapshot } from "./snapshot";
 import { restoreSnapshot } from "./snapshot";
 import { emit } from "./events";
+import type { CSSClassContract } from "./css";
+import { DEFAULT_CSS_CLASS_CONTRACT } from "./css";
 
 export interface MosaicOptions {
   root: HTMLElement;
@@ -12,6 +14,7 @@ export interface MosaicOptions {
     children?: string;
     handle?: string;
   };
+  cssClasses?: Partial<CSSClassContract>;
 }
 
 /**
@@ -24,7 +27,7 @@ export interface MosaicOptions {
  * - Event emission for external observers
  *
  * Consumers should:
- * 1. Instantiate Mosaic with a root element
+ * 1. Instantiate Mosaic with root element
  * 2. Call `initialize()`
  * 3. Listen for `mosaic:*` events
  *
@@ -47,13 +50,19 @@ export interface MosaicOptions {
 export class Mosaic {
   public root: HTMLElement;
   public selectors: MosaicOptions["selectors"];
-  private state: MosaicState = MosaicState.Idle;
+  public cssClasses: CSSClassContract;
   public snapshot: MosaicSnapshot | null = null;
+
+  private state: MosaicState = MosaicState.Idle;
   private controller: DragController | null = null;
 
   constructor(options: MosaicOptions) {
     this.root = options.root;
     this.selectors = options.selectors;
+    this.cssClasses = {
+      ...DEFAULT_CSS_CLASS_CONTRACT,
+      ...options.cssClasses,
+    };
   }
 
   /**

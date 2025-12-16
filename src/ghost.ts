@@ -1,12 +1,22 @@
+import type { CSSClassContract } from "./css";
+import { applyClasses } from "./css";
+
 export class Ghost {
   private ghost: HTMLElement | null = null;
 
-  create(node: HTMLElement, x: number, y: number) {
+  create(css: CSSClassContract, node: HTMLElement, x: number, y: number): void {
+    if (!(node instanceof HTMLElement)) {
+      throw new TypeError(
+        "Ghost.create expected HTMLElement; received " + typeof node
+      );
+    }
+
     if (this.ghost) this.remove();
 
     const clone = node.cloneNode(true) as HTMLElement;
 
-    clone.classList.add("mosaic--ghost");
+    applyClasses(clone, css.ghost);
+
     clone.style.position = "fixed";
     clone.style.top = "0";
     clone.style.left = "0";

@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import { Ghost } from "../src/ghost";
+import { DEFAULT_CSS_CLASS_CONTRACT } from "../src/css";
 
 describe("Ghost", () => {
   let node: HTMLElement;
@@ -14,7 +15,7 @@ describe("Ghost", () => {
   });
 
   it("creates a ghost element cloned from the original node", () => {
-    ghost.create(node, 100, 200);
+    ghost.create(DEFAULT_CSS_CLASS_CONTRACT, node, 100, 200);
 
     const g = document.querySelector(".mosaic--ghost") as HTMLElement;
 
@@ -25,7 +26,7 @@ describe("Ghost", () => {
   });
 
   it("moves the ghost by updating its transform", () => {
-    ghost.create(node, 0, 0);
+    ghost.create(DEFAULT_CSS_CLASS_CONTRACT, node, 0, 0);
 
     ghost.move(50, 75);
 
@@ -35,7 +36,7 @@ describe("Ghost", () => {
   });
 
   it("removes the ghost from the DOM", () => {
-    ghost.create(node, 0, 0);
+    ghost.create(DEFAULT_CSS_CLASS_CONTRACT, node, 0, 0);
 
     ghost.remove();
 
@@ -48,7 +49,7 @@ describe("Ghost", () => {
   });
 
   it("clears internal reference after removal", () => {
-    ghost.create(node, 0, 0);
+    ghost.create(DEFAULT_CSS_CLASS_CONTRACT, node, 0, 0);
 
     ghost.remove();
 
@@ -57,10 +58,10 @@ describe("Ghost", () => {
   });
 
   it("replaces an existing ghost when create() is called again", () => {
-    ghost.create(node, 10, 20);
+    ghost.create(DEFAULT_CSS_CLASS_CONTRACT, node, 10, 20);
     const first = document.querySelector(".mosaic--ghost") as HTMLElement;
 
-    ghost.create(node, 30, 40);
+    ghost.create(DEFAULT_CSS_CLASS_CONTRACT, node, 30, 40);
     const second = document.querySelector(".mosaic--ghost") as HTMLElement;
 
     expect(first).not.toBe(second);
@@ -70,5 +71,38 @@ describe("Ghost", () => {
   it("move() returns early when no ghost exists", () => {
     // no ghost created yet
     expect(() => ghost.move(50, 60)).not.toThrow();
+  });
+
+  it("applies all ghost CSS classes when space-separated", () => {
+    const css = {
+      ...DEFAULT_CSS_CLASS_CONTRACT,
+      ghost: "ghost-base ghost-shadow ghost-pointer"
+    };
+
+    ghost.create(css, node, 0, 0);
+
+    const g = document.querySelector(".ghost-base") as HTMLElement;
+
+    expect(g).toBeTruthy();
+    expect(g.classList.contains("ghost-shadow")).toBe(true);
+    expect(g.classList.contains("ghost-pointer")).toBe(true);
+  });
+
+  it("throws a TypeError when called with a non-HTMLElement node", () => {
+    // @ts-expect-error — intentional misuse for runtime validation
+    const badNode = 42;
+
+    expect(() => {
+      ghost.create(DEFAULT_CSS_CLASS_CONTRACT, badNode as any, 0, 0);
+    }).toThrowError(TypeError);
+
+    expect(() => {
+      ghost.create(DEFAULT_CSS_CLASS_CONTRACT, badNode as any, 0, 0);
+    }).toThrowError(
+      "Ghost.create expected HTMLElement; received number"
+    );
+
+    // Ensure no ghost element was created as a side effect
+    expect(document.querySelector(".mosaic--ghost")).toBeNull();
   });
 });
