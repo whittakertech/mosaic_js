@@ -5,6 +5,7 @@ import { restoreSnapshot } from "./snapshot";
 import { emit } from "./events";
 import type { CSSClassContract } from "./css";
 import { DEFAULT_CSS_CLASS_CONTRACT } from "./css";
+import type { DragLifecycleHooks } from "./drag";
 
 export interface MosaicOptions {
   root: HTMLElement;
@@ -15,6 +16,7 @@ export interface MosaicOptions {
     handle?: string;
   };
   cssClasses?: Partial<CSSClassContract>;
+  dragLifecycleHooks?: DragLifecycleHooks;
 }
 
 /**
@@ -55,6 +57,7 @@ export class Mosaic {
 
   private state: MosaicState = MosaicState.Idle;
   private controller: DragController | null = null;
+  private readonly dragLifecycleHooks?: DragLifecycleHooks;
 
   constructor(options: MosaicOptions) {
     this.root = options.root;
@@ -63,6 +66,7 @@ export class Mosaic {
       ...DEFAULT_CSS_CLASS_CONTRACT,
       ...options.cssClasses,
     };
+    this.dragLifecycleHooks = options.dragLifecycleHooks;
   }
 
   /**
@@ -75,7 +79,7 @@ export class Mosaic {
    * Emits the `mosaic:init` event.
    */
   initialize() {
-    this.controller = new DragController(this);
+    this.controller = new DragController(this, this.dragLifecycleHooks);
 
     this.root.addEventListener("pointerdown", this.controller.pointerDown);
     window.addEventListener("pointermove", this.controller.pointerMove);
@@ -129,6 +133,10 @@ export class Mosaic {
     }
 
     emit("mosaic:destroy");
+  }
+
+  public getState(): MosaicState {
+    return this.state;
   }
 
   /**

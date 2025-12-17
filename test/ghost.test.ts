@@ -89,7 +89,6 @@ describe("Ghost", () => {
   });
 
   it("throws a TypeError when called with a non-HTMLElement node", () => {
-    // @ts-expect-error — intentional misuse for runtime validation
     const badNode = 42;
 
     expect(() => {

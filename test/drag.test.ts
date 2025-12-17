@@ -174,30 +174,48 @@ describe("DragController", () => {
     it("confirms when constraints allow", () => {
       mockConstraints(true);
 
+      const spy = vi.spyOn(mosaic as any, "setState");
+
       window.dispatchEvent(new PointerEvent("pointerup", { bubbles: true }));
 
-      expect((mosaic as any).state).toBe(MosaicState.Mutated);
+      expect(spy).toHaveBeenCalledWith(MosaicState.Mutated);
+      expect(spy).toHaveBeenCalledWith(MosaicState.Idle);
     });
 
     it("triggers rollback when constraints disallow drop", () => {
       mockConstraints(false);
 
+      const spy = vi.spyOn(mosaic as any, "setState");
+
       window.dispatchEvent(new PointerEvent("pointerup", { bubbles: true }));
 
-      expect((mosaic as any).state).toBe(MosaicState.RollingBack);
+      expect(spy).toHaveBeenCalledWith(MosaicState.RollingBack);
+      expect(spy).toHaveBeenCalledWith(MosaicState.Idle);
     });
 
     it("falls back to activeNode when event.target is not an HTMLElement", () => {
       mockConstraints(true);
 
+      const spy = vi.spyOn(mosaic as any, "setState");
+
       const evt = new PointerEvent("pointerup", { bubbles: true });
       window.dispatchEvent(evt);
 
-      expect((mosaic as any).state).toBe(MosaicState.Mutated);
+      expect(checkConstraints).toHaveBeenCalled();
+
+      const [dragged, target] =
+        (checkConstraints as MockedFunction<typeof checkConstraints>).mock.calls[0];
+
+      expect(target).toBe(dragged);
+
+      expect(spy).toHaveBeenCalledWith(MosaicState.Mutated);
+      expect(spy).toHaveBeenCalledWith(MosaicState.Idle);
     });
 
     it("falls back to activeNode when closest() returns null", () => {
       mockConstraints(true);
+
+      const spy = vi.spyOn(mosaic as any, "setState");
 
       const fake = document.createElement("div");
       fake.closest = () => null;
@@ -207,11 +225,15 @@ describe("DragController", () => {
 
       window.dispatchEvent(evt);
 
-      expect((mosaic as any).state).toBe(MosaicState.Mutated);
+      expect(spy).toHaveBeenCalledWith(MosaicState.Mutated);
+      expect(spy).toHaveBeenCalledWith(MosaicState.Idle);
     });
 
     it("falls back to activeNode when target.closest is not a function", () => {
       mockConstraints(true);
+
+
+      const spy = vi.spyOn(mosaic as any, "setState");
 
       const fake = document.createElement("div");
       // @ts-ignore
@@ -222,7 +244,8 @@ describe("DragController", () => {
 
       window.dispatchEvent(evt);
 
-      expect((mosaic as any).state).toBe(MosaicState.Mutated);
+      expect(spy).toHaveBeenCalledWith(MosaicState.Mutated);
+      expect(spy).toHaveBeenCalledWith(MosaicState.Idle);
     });
   });
 });
