@@ -33,7 +33,6 @@ describe("Drag lifecycle hook invariants", () => {
     };
 
     expect(() => {
-      // @ts-expect-error — testing internal invariant
       controller["invokeHook"]("onDragStart", ctx);
     }).toThrowError(
       new Error(`Hook onDragStart invoked in ${MosaicState.Idle}, expected ${MosaicState.PointerDown}.`)

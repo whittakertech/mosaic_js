@@ -14,6 +14,7 @@ export class DragController {
   readonly hooks?: DragLifecycleHooks;
   private activeNode: HTMLElement | null = null;
   private ghost: Ghost;
+  private hoverTarget: HTMLElement | null = null;
 
   constructor(mosaic: Mosaic, hooks?: DragLifecycleHooks) {
     this.mosaic = mosaic;
@@ -49,25 +50,29 @@ export class DragController {
 
     this.mosaic.setState(MosaicState.Dragging);
 
-    const el = document.elementFromPoint(e.clientX, e.clientY) as HTMLElement;
-    if (!el) return;
+    const nextHover = this.resolveHoverTarget(e);
 
-    const target = el.closest(this.mosaic.selectors.node);
-    if (!target || target === this.activeNode) return;
+    if (nextHover !== this.hoverTarget) {
+      this.hoverTarget = nextHover;
+    }
 
-    const targetRect = target.getBoundingClientRect();
+    if (!this.hoverTarget) return;
+
+    const { root } = this.mosaic;
+
+    // 🔒 Critical invariant: hover target must belong to this root
+    if (this.hoverTarget.parentElement !== root) return;
+
+    const targetRect = this.hoverTarget.getBoundingClientRect();
     const before = e.clientY < targetRect.top + targetRect.height / 2;
 
     this.ghost.move(e.clientX, e.clientY);
     this.invokeHook("onDragMove", this.createContext(e));
 
-    const { root } = this.mosaic;
-
-    if (before) {
-      root.insertBefore(this.activeNode, target);
-    } else {
-      root.insertBefore(this.activeNode, target.nextSibling);
-    }
+    const referenceNode = before
+      ? this.hoverTarget
+      : this.hoverTarget.nextSibling;
+    root.insertBefore(this.activeNode, referenceNode);
   }
 
   pointerUp(e: PointerEvent) {
@@ -117,6 +122,8 @@ export class DragController {
       removeClasses(this.activeNode, this.mosaic.cssClasses.active);
     }
     this.activeNode = null;
+    this.hoverTarget = null;
+
     this.mosaic.setState(MosaicState.Idle);
 
     if (e) this.invokeHook("onDragEnd", this.createContext(e));
@@ -147,6 +154,24 @@ export class DragController {
       },
       state: this.mosaic.getState(),
     };
+  }
+
+  private resolveHoverTarget(e: PointerEvent): HTMLElement | null {
+    /* v8 ignore next -- @preserve | defensive guard: resolveHoverTarget is never called without activeNode */
+    if (!this.activeNode) return null;
+
+    /* v8 ignore next -- @preserve | defensive guard: pointerMove guarantees Dragging */
+    if (this.mosaic.getState() !== MosaicState.Dragging) return null;
+
+    const el = document.elementFromPoint(e.clientX, e.clientY);
+    if (!(el instanceof HTMLElement)) return null;
+
+    const target = el.closest(this.mosaic.selectors.node);
+    if (!(target instanceof HTMLElement)) return null;
+
+    if (target === this.activeNode) return null;
+
+    return target;
   }
 }
 
