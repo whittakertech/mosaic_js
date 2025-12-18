@@ -1,33 +1,61 @@
-# Drag Lifecycle (v0.2 Preview)
+# Drag Lifecycle
 
-Drag behavior in Mosaic follows a predictable progression:
+MosaicJS implements a **deterministic, state-driven drag lifecycle**.  
+Pointer events (`pointerdown`, `pointermove`, `pointerup`) act as **inputs** that advance the lifecycle, but they are **not** the lifecycle itself.
 
-1. **pointerdown** → capture active node + create snapshot
-2. **pointermove** → update hover target + set state
-3. **pointerup** → evaluate constraints & commit or rollback
+All drag behavior is governed by explicit state transitions that are observable, testable, and guaranteed.
 
 ---
 
-## Mermaid Diagram: Drag State Machine
+## Drag State Machine
 
 ```mermaid
-stateDiagram-v2
-    [*] --> Idle
-
-    Idle --> PointerDown: pointerdown
-    PointerDown --> Dragging: pointermove
-    Dragging --> Hovering: over new target
-    Hovering --> Dragging: move away
-    Dragging --> Dropping: pointerup
-    Dropping --> Pending: constraints pass
-    Pending --> Idle: confirm()
-    Dropping --> RollingBack: constraints fail
-    RollingBack --> Idle: reject()
+<!--@include: ./_generated/drag-state-machine.mmd-->
 ```
+
+> <small>*Diagram generated from* `src/state.ts` *and rendered via MermaidJS*</small>
+
+---
+
+## Lifecycle Hooks
+
+MosaicJS exposes **optional lifecycle hooks** that allow external systems to observe drag behavior **without mutating engine state**.
+
+Hooks are invoked synchronously at specific, guaranteed points in the lifecycle.
+
+<!--@include: ./_generated/drag-hook-table.md-->
+
+### Example Usage
+
+```html
+<div id="root">
+  <div class="item" data-mosaic-id="a" id="item-a">A</div>
+  <div class="item" data-mosaic-id="b" id="item-b">B</div>
+</div>
+
+<script>
+  const mosaic = new Mosaic({
+    root: document.getElementById("root"),
+    selectors: { node: ".item" },
+    dragLifecycleHooks: {
+      onDragEnd: () => {
+        console.log("The drag operation has completed.");
+      }
+    }
+  });
+
+  mosaic.initialize();
+</script>
+```
+
+Lifecycle hooks are intended for **observation and side effects** such as analytics, logging, or UI feedback.  
+Hooks **must not** reorder DOM nodes or mutate Mosaic internal state.
 
 ---
 
 ## PointerDown Phase
+
+Triggered by a valid `pointerdown` event on a draggable node.
 
 ```ts
 pointerDown(e) {
@@ -37,29 +65,51 @@ pointerDown(e) {
 }
 ```
 
+**Responsibilities:**
+- Identify and lock the active node
+- Capture a snapshot of the current DOM order
+- Transition the engine to `PointerDown`
+
 ---
 
 ## Dragging Phase
 
-- Node moves under pointer
-- Hover target is computed (v0.2)
-- State transitions to `Dragging`
+- The active node follows pointer movement
+- Potential drop targets are computed internally (v0.2)
+- The lifecycle transitions to and remains in `Dragging`
+
+This phase may repeat many times during a single drag operation.
 
 ---
 
 ## Dropping Phase
 
+Triggered by `pointerup`.
+
 ```ts
 const result = checkConstraints(dragged, target, options);
 ```
 
-- If `allowed`, Mosaic commits mutation and clears snapshot
-- If rejected, Mosaic rolls back via `restoreSnapshot()`
+- If constraints **pass**, Mosaic commits the mutation and clears the snapshot
+- If constraints **fail**, Mosaic restores the snapshot via `restoreSnapshot()`
+
+In both cases, cleanup is guaranteed and the lifecycle proceeds toward `Idle`.
 
 ---
 
 ## Guarantees
 
-- Every invalid drag leads to rollback
-- State transitions are deterministic
-- Drag logic remains fully testable  
+MosaicJS guarantees:
+
+- Deterministic, explicit drag lifecycle transitions
+- Snapshot rollback for all rejected drops
+- Read-only lifecycle context for external observers
+- Guaranteed cleanup and return to `Idle`
+- External hooks cannot mutate engine state
+
+MosaicJS intentionally does **not** guarantee:
+
+- Styling, animation, or visual transitions
+- Framework-specific integration behavior
+- Accessibility semantics
+- Business logic, persistence, or side effects

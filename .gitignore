@@ -74,3 +74,4 @@ logs/
 
 docs/.vitepress/cache
 tmp/
+.scripts-dist/

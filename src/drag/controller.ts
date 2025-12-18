@@ -5,12 +5,13 @@ import type { Mosaic } from "../mosaic";
 import { Ghost } from "../ghost";
 import { applyClasses, removeClasses } from "../css";
 import type { DragLifecycleHooks } from "./lifecycle";
+import { DRAG_HOOK_STATES } from "./lifecycle";
 import type { DragContext } from "./context";
 
 export class DragController {
   /** @internal */
   readonly mosaic: Mosaic;
-  private hooks?: DragLifecycleHooks;
+  readonly hooks?: DragLifecycleHooks;
   private activeNode: HTMLElement | null = null;
   private ghost: Ghost;
 
@@ -125,6 +126,14 @@ export class DragController {
     hook: K,
     ctx: DragContext
   ): void {
+    const expected = DRAG_HOOK_STATES[hook];
+
+    if (expected && ctx.state !== expected) {
+      throw new Error(
+        `Hook ${hook} invoked in ${ctx.state}, expected ${expected}.`
+      );
+    }
+
     this.hooks?.[hook]?.(ctx);
   }
 

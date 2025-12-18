@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { Mosaic, MosaicState } from '../src';
-import { DragContext } from '../src/drag';
+import type { DragContext } from '../src/drag';
 
 vi.mock("../src/constraints", () => ({
   checkConstraints: vi.fn(() => ({ allowed: true }))

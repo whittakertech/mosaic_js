@@ -16,7 +16,9 @@
       "require": "./dist/index.cjs"
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/whittakertech/mosaic_js"
@@ -33,8 +35,9 @@
     "test": "vitest",
     "test:ui": "vitest --ui",
     "coverage": "vitest run --coverage",
-    "docs": "vitepress dev docs",
-    "docs:build": "vitepress build docs",
+    "docs:generate": "tsc -p scripts/tsconfig.json && node .scripts-dist/generate-docs/index.js",
+    "docs": "npm run docs:generate && vitepress dev docs",
+    "docs:build": "npm run docs:generate && vitepress build docs",
     "docs:api": "typedoc",
     "dev": "tsup src/index.ts --format esm --watch",
     "build": "tsup src/index.ts --format esm,cjs --dts",
@@ -59,12 +62,14 @@
     "eslint-plugin-prettier": "^5.5.4",
     "jsdom": "^27.3.0",
     "prettier": "^3.7.4",
+    "ts-node": "^10.9.2",
     "tsup": "^8.5.1",
     "typedoc": "^0.28.15",
     "typedoc-plugin-markdown": "^4.9.0",
     "typedoc-vitepress-theme": "^1.1.2",
     "typescript": "^5.9.3",
     "vitepress": "^1.6.4",
+    "vitepress-plugin-mermaid": "^2.0.17",
     "vitest": "^4.0.15"
   }
 }
