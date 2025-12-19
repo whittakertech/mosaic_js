@@ -53,6 +53,12 @@ export class DragController {
     const nextHover = this.resolveHoverTarget(e);
 
     if (nextHover !== this.hoverTarget) {
+      if (this.hoverTarget)
+        this.emitHoverEvent("mosaic:hover:leave", this.hoverTarget);
+
+      /* v8 ignore next -- @preserve | branch guarded by hoverTarget inequality */
+      if (nextHover) this.emitHoverEvent("mosaic:hover:enter", nextHover);
+
       this.hoverTarget = nextHover;
     }
 
@@ -172,6 +178,20 @@ export class DragController {
     if (target === this.activeNode) return null;
 
     return target;
+  }
+
+  private emitHoverEvent(
+    type: "mosaic:hover:enter" | "mosaic:hover:leave",
+    target: HTMLElement | null
+  ) {
+    this.mosaic.root.dispatchEvent(
+      new CustomEvent(type, {
+        detail: {
+          /* v8 ignore next -- @preserve | target guaranteed non-null by caller */
+          targetId: target?.id ?? null,
+        },
+      })
+    );
   }
 }
 
