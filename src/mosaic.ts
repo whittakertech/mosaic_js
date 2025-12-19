@@ -62,10 +62,10 @@ export class Mosaic {
   constructor(options: MosaicOptions) {
     this.root = options.root;
     this.selectors = options.selectors;
-    this.cssClasses = {
+    this.cssClasses = Object.freeze({
       ...DEFAULT_CSS_CLASS_CONTRACT,
       ...options.cssClasses,
-    };
+    });
     this.dragLifecycleHooks = options.dragLifecycleHooks;
   }
 
