@@ -8,11 +8,16 @@ export default withMermaid(
     title: 'MosaicJS',
     description: 'Event-driven drag-and-drop engine for WhittakerTech',
     base: '/',
+    head: [
+      ['link', { rel: 'icon', href: '/mosaic-js-logo.svg' }],
+      ['link', { rel: 'icon', href: '/mosaic-js-logo.svg', media: "(prefers-color-scheme: light)"}],
+      ['link', { rel: 'icon', href: '/mosaic-js-logo-dark.svg', media: "(prefers-color-scheme: dark)"}]
+    ],
 
     themeConfig: {
       logo: {
-        light: '/public/mosaic-js-logo.svg',
-        dark: '/public/mosaic-js-logo-dark.svg'
+        light: '/mosaic-js-logo.svg',
+        dark: '/mosaic-js-logo-dark.svg'
       },
       search: {
         provider: 'local'

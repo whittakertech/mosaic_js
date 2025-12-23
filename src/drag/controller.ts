@@ -7,6 +7,7 @@ import { applyClasses, removeClasses } from "../css";
 import type { DragLifecycleHooks } from "./lifecycle";
 import { DRAG_HOOK_STATES } from "./lifecycle";
 import type { DragContext } from "./context";
+import { buildDragContext } from "./context";
 
 export class DragController {
   /** @internal */
@@ -151,15 +152,17 @@ export class DragController {
   }
 
   private createContext(e: PointerEvent): DragContext {
-    return {
+    return buildDragContext({
       mosaicRootId: this.mosaic.root.id,
       activeNodeId: this.activeNode?.id ?? null,
+      dropTargetId: this.hoverTarget?.id ?? null,
       pointer: {
         x: e.clientX,
         y: e.clientY,
       },
       state: this.mosaic.getState(),
-    };
+      hasSnapshot: Boolean(this.mosaic.snapshot),
+    });
   }
 
   private resolveHoverTarget(e: PointerEvent): HTMLElement | null {

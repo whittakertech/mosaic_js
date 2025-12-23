@@ -6,8 +6,9 @@
 ![license](https://img.shields.io/npm/l/@whittakertech/mosaic)  
 
 <picture>
-  <source srcset="/docs/public/mosaic-js-logo-dark.svg" type="image/svg+xml" media="(prefers-color-scheme: dark)">
-  <img src="/docs/public/mosaic-js-logo.svg" alt="MosaicJS Logo" width="200">
+  <source media="(prefers-color-scheme: dark)" srcset="docs/public/mosaic-js-logo-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="docs/public/mosaic-js-logo.svg">
+  <img alt="MosaicJS Logo" src="docs/public/mosaic-js-logo.svg" width="200">
 </picture>
 
 **An event-driven, snapshot-based drag-and-drop engine for the modern web.**
