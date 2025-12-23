@@ -35,7 +35,6 @@ export default withMermaid(
         }
       ],
       nav: [
-        { text: 'Home', link: '/' },
         { text: 'Getting Started', link: '/getting-started' },
         { text: 'API', link: '/api/' },
         { text: 'Guides', link: '/guides/architecture' }

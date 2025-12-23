@@ -10,8 +10,8 @@ The system is organized into four cooperating subsystems:
 3. **Constraints System** — validates whether a potential drop is allowed
 4. **Events Layer** — unified, typed event dispatch for all public signals
 
-Drag behavior (pointerdown → pointermove → pointerup) is implemented in *DragController* (coming in v0.2), connecting all subsystems.
-
+Drag behavior (pointerdown → pointermove → pointerup) is implemented in
+*DragController*, connecting all subsystems.
 ---
 
 ## High-Level Mermaid Diagram
@@ -37,7 +37,7 @@ Responsibilities:
 - hold the active snapshot
 - commit or reject mutations
 - emit lifecycle events (`mosaic:init`, `mosaic:destroy`)
-- delegate drag logic to DragController (v0.2)
+- delegate drag logic to DragController
 
 It never mutates the DOM directly except through snapshots.
 
@@ -106,7 +106,7 @@ It ensures consistency across all UIs and frameworks.
 
 ---
 
-## DragController (v0.2)
+## DragController
 
 DragController will implement the pointer lifecycle:
 

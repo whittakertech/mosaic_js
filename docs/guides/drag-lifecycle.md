@@ -48,8 +48,9 @@ Hooks are invoked synchronously at specific, guaranteed points in the lifecycle.
 </script>
 ```
 
-Lifecycle hooks are intended for **observation and side effects** such as analytics, logging, or UI feedback.  
-Hooks **must not** reorder DOM nodes or mutate Mosaic internal state.
+Lifecycle hooks are intended for **observation and side effects** such as
+analytics, logging, or UI feedback.   
+Hooks **must not** manipulate the state machine or trigger additional drag operations.
 
 ---
 
