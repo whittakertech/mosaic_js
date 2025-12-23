@@ -10,6 +10,25 @@ export default withMermaid(
     base: '/',
 
     themeConfig: {
+      logo: {
+        light: '/public/mosaic-js-logo.svg',
+        dark: '/public/mosaic-js-logo-dark.svg'
+      },
+      search: {
+        provider: 'local'
+      },
+      socialLinks: [
+        {
+          icon: 'github',
+          link: 'https://github.com/whittakertech/mosaic_js',
+          ariaLabel: "WhittakerTech's MosaicJS on GitHub"
+        },
+        {
+          icon: 'x',
+          link: 'https://x.com/whittakertech/',
+          ariaLabel: "WhittakerTech on X"
+        }
+      ],
       nav: [
         { text: 'Home', link: '/' },
         { text: 'Getting Started', link: '/getting-started' },

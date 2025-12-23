@@ -4,11 +4,17 @@
 ![docs](https://github.com/whittakertech/mosaic_js/actions/workflows/docs.yml/badge.svg)
 ![coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)
 ![license](https://img.shields.io/npm/l/@whittakertech/mosaic)  
+
+<picture>
+  <source srcset="/docs/public/mosaic-js-logo-dark.svg" type="image/svg+xml" media="(prefers-color-scheme: dark)">
+  <img src="/docs/public/mosaic-js-logo.svg" alt="MosaicJS Logo" width="200">
+</picture>
+
 **An event-driven, snapshot-based drag-and-drop engine for the modern web.**
 
 MosaicJS is a lightweight, framework-agnostic TypeScript library for building **precise, reversible, constraint-aware drag-and-drop interactions** in the browser.
 
-It belongs to the WhittakerTech ecosystem, but works anywhere the DOM exists — including vanilla JS, React, Vue, and Web Components.
+It belongs to the WhittakerTech ecosystem but works anywhere the DOM exists — including vanilla JS, React, Vue, and Web Components.
 
 MosaicJS favors **correctness, determinism, and reversibility** over implicit DOM mutation.
 
