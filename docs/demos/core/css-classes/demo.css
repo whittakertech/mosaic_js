@@ -1,0 +1,47 @@
+body {
+  background: #0d1117;
+  color: #e6edf3;
+  padding: 32px;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.wrap { display: flex; justify-content: center; }
+
+#list {
+  width: 340px;
+  padding: 16px;
+  background: #111826;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,.1);
+}
+
+.item {
+  background: #161b28;
+  border: 1px solid rgba(255,255,255,.12);
+  padding: 12px 14px;
+  margin-bottom: 8px;
+  border-radius: 6px;
+  user-select: none;
+}
+
+/* -------------------------
+   Custom drag class contract
+-------------------------- */
+
+.drag-active:not(.drag-ghost) {
+  border: 2px dashed #ffd166;
+  background: rgba(255,209,102,.12);
+}
+
+.drag-ghost {
+  cursor: grabbing;
+  transform: scale(1.02);
+  opacity: 1;
+  box-shadow:
+      0 14px 40px rgba(0,0,0,.45),
+      0 0 0 2px rgba(255,209,102,.6);
+}
+
+.drag-target {
+  outline: 2px dashed rgba(255,255,255,.3);
+}

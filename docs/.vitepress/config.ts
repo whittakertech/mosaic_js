@@ -1,6 +1,9 @@
 import { defineConfig } from 'vitepress'
 import apiSidebar from '../api/typedoc-sidebar.json'
 import { withMermaid } from 'vitepress-plugin-mermaid'
+import demonster from './plugins/demonster'
+import demoSidebar from '../demos/sidebar.json'
+
 
 export default withMermaid(
   defineConfig({
@@ -13,6 +16,22 @@ export default withMermaid(
       ['link', { rel: 'icon', href: '/mosaic-js-logo.svg', media: "(prefers-color-scheme: light)"}],
       ['link', { rel: 'icon', href: '/mosaic-js-logo-dark.svg', media: "(prefers-color-scheme: dark)"}]
     ],
+
+    vite: {
+      plugins: [
+        demonster({
+          mountPath: "/demos",
+          categories: [
+            {
+              slug: 'core',
+              label: 'Core Concepts',
+              description: 'The fundamental building blocks of MosaicJS. Start here.',
+              order: 1
+            }
+          ]
+        })
+      ]
+    },
 
     themeConfig: {
       logo: {
@@ -36,6 +55,7 @@ export default withMermaid(
       ],
       nav: [
         { text: 'Getting Started', link: '/getting-started' },
+        { text: 'Demos', link: '/demos' },
         { text: 'API', link: '/api/' },
         { text: 'Guides', link: '/guides/architecture' }
       ],
@@ -43,6 +63,7 @@ export default withMermaid(
         "/api/": {
           items: apiSidebar
         },
+        "/demos/": demoSidebar,
         "/guides/": {
           base: "/guides/",
           items: [

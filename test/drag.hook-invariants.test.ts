@@ -30,6 +30,8 @@ describe("Drag lifecycle hook invariants", () => {
       activeNodeId: null,
       pointer: { x: 0, y: 0 },
       state: MosaicState.Idle, // ❌ should be PointerDown
+      dropTargetId: null,
+      hasSnapshot: false,
     };
 
     expect(() => {

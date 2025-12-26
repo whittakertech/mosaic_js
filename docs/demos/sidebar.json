@@ -1,0 +1,28 @@
+[
+  {
+    "text": "Demos",
+    "link": "/demos/",
+    "collapsible": true,
+    "items": [
+      {
+        "text": "Core Concepts",
+        "link": "/demos/core/",
+        "collapsible": true,
+        "items": [
+          {
+            "text": "Basic Drag",
+            "link": "/demos/core/basic-drag/"
+          },
+          {
+            "text": "CSS Class Customization",
+            "link": "/demos/core/css-classes/"
+          },
+          {
+            "text": "Event Handling",
+            "link": "/demos/core/event-handling/"
+          }
+        ]
+      }
+    ]
+  }
+]

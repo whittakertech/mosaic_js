@@ -1,0 +1,171 @@
+---
+title: Basic Drag
+description: Minimal setup of drag handling.
+---
+
+
+## Basic Drag
+
+
+This is the simplest possible MosaicJS setup.
+
+It gives you a working drag-and-drop list with:
+  - zero configuration beyond `root` + `selectors`
+  - automatic ghost creation
+  - automatic reordering
+  - safe DOM rollback if needed
+
+Try dragging the items below:
+
+
+
+<iframe
+  src="/demos/_iframes/core/basic-drag/index.html"
+  style="
+    width:100%;
+    height:480px;
+    border:1px solid #ddd;
+    border-radius:8px;
+  "
+></iframe>
+
+MosaicJS works with three main pieces:
+
+1️⃣ **HTML structure**
+   Elements with `data-mosaic-id` so Mosaic can track them.
+
+
+
+```html
+<div class="container">
+  <!--
+    Set up a basic container and items
+    with unique values in data-mosaic-id
+  -->
+  <div id="source">
+    <div class="item" data-mosaic-id="item-1">Item 1</div>
+    <div class="item" data-mosaic-id="item-2">Item 2</div>
+    <div class="item" data-mosaic-id="item-3">Item 3</div>
+  </div>
+</div>
+```
+
+
+2️⃣ **CSS**
+   Your visuals + Mosaic’s runtime classes like `.mosaic--ghost` and `.mosaic--active`.
+
+
+
+```css
+/** MosaicJS offers no internal CSS. It will work with any framework. */
+
+/** Generic background for iFrame */
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  margin: 0;
+  padding: 32px;
+  background: #0d1117;
+  color: #e6edf3;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+}
+
+/** This element holds the sortable items */
+#source {
+  width: 420px;
+  padding: 20px;
+  background: #111826;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.06);
+  box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.06),
+      0 14px 40px rgba(0,0,0,0.45);
+}
+
+/*
+ * These are the draggable items.
+ * Mosaic won't change how they look.
+ * Style them however you like.
+ */
+.item {
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  background: #161b28;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.08);
+  transition: transform .15s ease,
+              box-shadow .15s ease,
+              border .15s ease;
+  user-select: none;
+  --webkit-user-select: none;
+}
+
+.item:hover {
+  border: 1px solid rgba(255,255,255,0.25);
+  transform: translateY(-1px);
+}
+
+/*
+ * .mosaic--ghost is automatically added to
+ * the cloned element Mosaic creates while dragging.
+ *
+ * You don’t create this element;
+ * Mosaic does.
+ * You only style it.
+ */
+.mosaic--ghost {
+  opacity: 1;
+  box-shadow:
+      0 16px 40px rgba(0,0,0,.4),
+      0 0 0 2px rgba(100,181,246,.6);
+  cursor: grabbing;
+  transform: scale(1.02);
+  will-change: transform;
+}
+
+/*
+ * .mosaic--active is a dynamically added class,
+ * which finds its way on both the ghost
+ * and the original element.
+ *
+ * In this example we mask its contents to create
+ * a void to be dropped on.
+ */
+.mosaic--active:not(.mosaic--ghost){
+  border: 2px dashed #64b5f6;
+  background: rgba(100,181,246,.08);
+  color: transparent;
+}
+
+.mosaic--active:not(.mosaic--ghost) * {
+  opacity: 0;
+}
+
+```
+
+
+3️⃣ **JavaScript**
+   Create the `Mosaic` instance → call `initialize()` → done.
+
+
+
+```js
+// Import Mosaic from the module.
+import { Mosaic } from './mosaic.js';
+
+// Set up the configuration of Mosaic.
+const mosaic = new Mosaic({
+  root: document.getElementById('source'),
+  selectors: {
+    node: '.item'
+  }
+});
+
+// Initialize to get it working for you.
+mosaic.initialize();
+
+```
+

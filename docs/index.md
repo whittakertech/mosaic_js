@@ -8,11 +8,24 @@
   <img src="https://img.shields.io/npm/l/@whittakertech/mosaic" alt="License" />
 </div>
 
-<picture style="display: flex; justify-content: center;">
-  <source media="(prefers-color-scheme: dark)" srcset="/mosaic-js-logo-dark.svg">
-  <source media="(prefers-color-scheme: light)" srcset="/mosaic-js-logo.svg">
-  <img alt="MosaicJS Logo" src="/mosaic-js-logo.svg" width="200" role="img" aria-label="MosaicJS Logo">
-</picture>
+<div class="logo-wrap">
+  <img src="/mosaic-js-logo.svg" class="logo light-only">
+  <img src="/mosaic-js-logo-dark.svg" class="logo dark-only">
+</div>
+
+<style>
+.logo-wrap {
+  display: flex;
+  justify-content: center;
+}
+
+html.dark .light-only,
+html:not(.dark) .dark-only { 
+  display: none; 
+}
+
+.logo { width: 200px; display: block; }
+</style>
 
 **MosaicJS** is a lightweight, deterministic, event-driven drag-and-drop engine designed for the WhittakerTech ecosystem.
 

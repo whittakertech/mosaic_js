@@ -1,0 +1,38 @@
+title: "CSS Class Customization"
+category: core
+description: "Demonstrates replacing Mosaic’s internal CSS classes with your own."
+
+layout:
+  - type: heading
+    text: "CSS Class Customization"
+
+  - type: markdown
+    text: |
+      MosaicJS attaches CSS classes to elements while dragging.
+
+      But you're **not locked** to the default:
+
+      - `mosaic--active`
+      - `mosaic--ghost`
+      - `mosaic--drop-target`
+
+      You can rename them to match your design system.
+
+      This example replaces them with **custom names**.
+
+  - type: demo
+
+  - type: markdown
+    text: "### HTML"
+  - type: code
+    file: "./demo.html"
+
+  - type: markdown
+    text: "### CSS (custom class names, not Mosaic defaults)"
+  - type: code
+    file: "./demo.css"
+
+  - type: markdown
+    text: "### JavaScript (overriding Mosaic's class contract)"
+  - type: code
+    file: "./demo.js"

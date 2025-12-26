@@ -1,0 +1,33 @@
+title: "Event Handling"
+category: core
+description: "Demonstrates listening to MosaicJS lifecycle events."
+
+layout:
+  - type: heading
+    text: "Event Handling"
+
+  - type: markdown
+    text: |
+      MosaicJS is event-driven. This example shows how to listen for
+      lifecycle events emitted during drag, mutation, and rollback.
+
+      Try dragging and dropping the items. Watch the event log on the right.
+
+  - type: demo
+
+  - type: markdown
+    text: |
+      ## What This Demonstrates
+
+      - Mosaic emits global events such as:
+        - `mosaic:init`
+        - `mosaic:state`
+        - `mosaic:mutation:confirmed`
+        - `mosaic:mutation:rejected`
+        - `mosaic:rollback`
+
+      - You can respond without framework bindings.
+      - Events are informative and predictable.
+
+  - type: code
+    file: "./demo.js"

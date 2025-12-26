@@ -1,6 +1,6 @@
 services:
   mosaic:
-    image: whittkaertech/mosaicjs
+    image: whittakertech/mosaicjs
     build: .
     container_name: whittakertech_mosaicjs
     volumes:
@@ -8,10 +8,12 @@ services:
     stdin_open: true
     tty: true
   mosaic-docs:
-    image: whittkaertech/mosaicjs
+    image: whittakertech/mosaicjs
     build: .
     working_dir: /app
-    command: npm run docs -- --host 0.0.0.0 --port 5173 --no-open
+    command: >
+      sh -c "npm run docs:generate &&
+             npx vitepress dev docs --host 0.0.0.0 --port 5173 --no-open"
     ports:
       - "5173:5173"
     volumes:
