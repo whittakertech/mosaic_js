@@ -1,7 +1,7 @@
 {
   "name": "@whittakertech/mosaic",
   "author": "WhittakerTech",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Event-driven, deterministic drag-and-drop engine with constraint validation and rollback",
   "license": "MIT",
   "type": "module",
@@ -21,7 +21,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/whittakertech/mosaic_js"
+    "url": "git+https://github.com/whittakertech/mosaic_js.git"
   },
   "bugs": {
     "url": "https://github.com/whittakertech/mosaic_js/issues"
@@ -31,26 +31,18 @@
     "typecheck": "npm run typecheck:lib && npm run typecheck:test",
     "typecheck:lib": "tsc -p tsconfig.lib.json",
     "typecheck:test": "tsc -p tsconfig.test.json",
-
     "lint": "eslint src --ext .ts",
     "test": "vitest",
     "test:ui": "vitest --ui",
     "coverage": "vitest run --coverage",
-
     "docs:sidebar:prepare": "mkdir -p docs/demos && echo '{}' > docs/demos/sidebar.json",
-    "docs:sync:mosaic":
-      "mkdir -p docs/public/demos/_shared && cp dist/index.js docs/public/demos/_shared/mosaic.js",
-    "docs:generate":
-      "tsc -p scripts/tsconfig.json && node .scripts-dist/generate-docs/index.js",
+    "docs:sync:mosaic": "mkdir -p docs/public/demos/_shared && cp dist/index.js docs/public/demos/_shared/mosaic.js",
+    "docs:generate": "tsc -p scripts/tsconfig.json && node .scripts-dist/generate-docs/index.js",
     "docs:prepair": "npm run build && npm run docs:sync:mosaic && npm run docs:sidebar:prepare && npm run docs:generate",
-
     "docs:watch": "npm run docs:prepair && vitepress dev docs",
     "docs:build": "npm run docs:prepair && vitepress build docs",
-
     "docs:api": "typedoc",
-
     "docs": "npm run docs:api && npm run docs:build",
-
     "dev": "tsup src/index.ts --format esm --watch",
     "build": "tsup src/index.ts --format esm,cjs --dts",
     "release": "npm run build && npm publish --access public"

@@ -154,7 +154,7 @@ body {
 
 ```js
 // Import Mosaic from the module.
-import { Mosaic } from './mosaic.js';
+import { Mosaic } from '/demos/_shared/mosaic.js';
 
 // Set up the configuration of Mosaic.
 const mosaic = new Mosaic({
