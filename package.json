@@ -11,12 +11,14 @@
   "sideEffects": false,
   "exports": {
     ".": {
-      "types": "./dist/index.d.js",
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/whittakertech/mosaic_js"
@@ -29,13 +31,26 @@
     "typecheck": "npm run typecheck:lib && npm run typecheck:test",
     "typecheck:lib": "tsc -p tsconfig.lib.json",
     "typecheck:test": "tsc -p tsconfig.test.json",
+
     "lint": "eslint src --ext .ts",
     "test": "vitest",
     "test:ui": "vitest --ui",
     "coverage": "vitest run --coverage",
-    "docs": "vitepress dev docs",
-    "docs:build": "vitepress build docs",
+
+    "docs:sidebar:prepare": "mkdir -p docs/demos && echo '{}' > docs/demos/sidebar.json",
+    "docs:sync:mosaic":
+      "mkdir -p docs/public/demos/_shared && cp dist/index.js docs/public/demos/_shared/mosaic.js",
+    "docs:generate":
+      "tsc -p scripts/tsconfig.json && node .scripts-dist/generate-docs/index.js",
+    "docs:prepair": "npm run build && npm run docs:sync:mosaic && npm run docs:sidebar:prepare && npm run docs:generate",
+
+    "docs:watch": "npm run docs:prepair && vitepress dev docs",
+    "docs:build": "npm run docs:prepair && vitepress build docs",
+
     "docs:api": "typedoc",
+
+    "docs": "npm run docs:api && npm run docs:build",
+
     "dev": "tsup src/index.ts --format esm --watch",
     "build": "tsup src/index.ts --format esm,cjs --dts",
     "release": "npm run build && npm publish --access public"
@@ -59,12 +74,14 @@
     "eslint-plugin-prettier": "^5.5.4",
     "jsdom": "^27.3.0",
     "prettier": "^3.7.4",
+    "ts-node": "^10.9.2",
     "tsup": "^8.5.1",
     "typedoc": "^0.28.15",
     "typedoc-plugin-markdown": "^4.9.0",
     "typedoc-vitepress-theme": "^1.1.2",
     "typescript": "^5.9.3",
     "vitepress": "^1.6.4",
+    "vitepress-plugin-mermaid": "^2.0.17",
     "vitest": "^4.0.15"
   }
 }

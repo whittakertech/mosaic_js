@@ -20,10 +20,10 @@ flowchart TD
 
 ## Built-in v0.1 Constraints
 
-### Self-Drop Prevention
-```ts
+### Self-Drop Handling
+```typescript
 if (dragged === target) {
-  return { allowed: false, reason: "self-drop" };
+  return { allowed: true }; // Self-drops are allowed as no-ops
 }
 ```
 

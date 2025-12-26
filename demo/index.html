@@ -21,7 +21,33 @@
 
     const mosaic = new Mosaic({
       root,
-      selectors: { node: '.item' }
+      selectors: { node: '.item' },
+
+      dragLifecycleHooks: {
+      onDragStart(ctx) {
+        console.log('drag start', ctx);
+      },
+
+      onDragMove(ctx) {
+        console.log('drag move', ctx.pointer);
+      },
+
+      onPreDrop(ctx) {
+        console.log('pre-drop', ctx.activeNodeId);
+      },
+
+      onDropConfirmed(ctx) {
+        console.log('drop confirmed');
+      },
+
+      onDropRejected(ctx) {
+        console.log('drop rejected');
+      },
+
+      onDragEnd(ctx) {
+        console.log('drag end');
+      }
+    }
     });
 
     mosaic.initialize();

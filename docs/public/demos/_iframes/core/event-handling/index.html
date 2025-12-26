@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <style>body {
+  font-family: system-ui, -apple-system, sans-serif;
+  margin: 0;
+  padding: 28px;
+  background: #0d1117;
+  color: #e6edf3;
+}
+
+.wrap {
+  display: grid;
+  grid-template-columns: 480px 1fr;
+  gap: 28px;
+  align-items: start;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+}
+
+#source {
+  width: 420px;
+  padding: 20px;
+  background: #111826;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+.item {
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  background: #161b28;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.1);
+  user-select: none;
+}
+
+/* Ghost + Active for affordance */
+
+.mosaic--ghost {
+  box-shadow:
+      0 14px 30px rgba(0,0,0,.45),
+      0 0 0 2px rgba(100,181,246,.7);
+  cursor: grabbing;
+}
+
+.mosaic--active:not(.mosaic--ghost){
+  border: 2px dashed #64b5f6;
+  background: rgba(100,181,246,.1);
+  color: transparent;
+}
+
+.mosaic--active:not(.mosaic--ghost) * {
+  opacity: 0;
+}
+
+/* Event Log */
+
+.log {
+  background: #0f1624;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.06);
+  padding: 16px;
+}
+
+.log h3 {
+  margin-top: 0;
+  font-size: 16px;
+  opacity: .9;
+}
+
+#events {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 13px;
+}
+
+#events li {
+  padding: 6px 8px;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+
+#events li span {
+  opacity: .7;
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="container">
+    <div id="source">
+      <div class="item" data-mosaic-id="a">Alpha</div>
+      <div class="item" data-mosaic-id="b">Bravo</div>
+      <div class="item" data-mosaic-id="c">Charlie</div>
+    </div>
+  </div>
+
+  <aside class="log">
+    <h3>Event Log</h3>
+    <ul id="events"></ul>
+  </aside>
+</div>
+
+<script type="module" src="/demos/_shared/mosaic.js"></script>
+<script type="module">
+  import { Mosaic } from '/demos/_shared/mosaic.js';
+
+const logList = document.getElementById('events');
+
+function log(name, detail = null) {
+  const li = document.createElement('li');
+  li.innerHTML =
+    `<strong>${name}</strong>` +
+    (detail ? ` <span>${JSON.stringify(detail)}</span>` : '');
+  logList.prepend(li);
+
+  while (logList.children.length > 12)
+    logList.removeChild(logList.lastChild);
+}
+
+const mosaic = new Mosaic({
+  root: document.getElementById('source'),
+  selectors: { node: '.item' }
+});
+
+mosaic.initialize();
+
+/* Event listeners */
+
+window.addEventListener('mosaic:init', () => {
+  log('mosaic:init');
+});
+
+window.addEventListener('mosaic:state', e => {
+  log('mosaic:state', e.detail);
+});
+
+window.addEventListener('mosaic:mutation:confirmed', () => {
+  log('mosaic:mutation:confirmed');
+});
+
+window.addEventListener('mosaic:mutation:rejected', () => {
+  log('mosaic:mutation:rejected');
+});
+
+window.addEventListener('mosaic:rollback', () => {
+  log('mosaic:rollback');
+});
+
+</script>
+</body>
+</html>

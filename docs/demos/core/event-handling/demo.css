@@ -1,0 +1,86 @@
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  margin: 0;
+  padding: 28px;
+  background: #0d1117;
+  color: #e6edf3;
+}
+
+.wrap {
+  display: grid;
+  grid-template-columns: 480px 1fr;
+  gap: 28px;
+  align-items: start;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+}
+
+#source {
+  width: 420px;
+  padding: 20px;
+  background: #111826;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+.item {
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  background: #161b28;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.1);
+  user-select: none;
+}
+
+/* Ghost + Active for affordance */
+
+.mosaic--ghost {
+  box-shadow:
+      0 14px 30px rgba(0,0,0,.45),
+      0 0 0 2px rgba(100,181,246,.7);
+  cursor: grabbing;
+}
+
+.mosaic--active:not(.mosaic--ghost){
+  border: 2px dashed #64b5f6;
+  background: rgba(100,181,246,.1);
+  color: transparent;
+}
+
+.mosaic--active:not(.mosaic--ghost) * {
+  opacity: 0;
+}
+
+/* Event Log */
+
+.log {
+  background: #0f1624;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.06);
+  padding: 16px;
+}
+
+.log h3 {
+  margin-top: 0;
+  font-size: 16px;
+  opacity: .9;
+}
+
+#events {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 13px;
+}
+
+#events li {
+  padding: 6px 8px;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+
+#events li span {
+  opacity: .7;
+}

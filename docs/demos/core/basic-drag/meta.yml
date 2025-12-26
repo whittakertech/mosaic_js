@@ -1,0 +1,38 @@
+title: "Basic Drag"
+category: core
+description: "Minimal setup of drag handling."
+layout:
+  - type: heading
+    text: "Basic Drag"
+  - type: markdown
+    text: |
+      This is the simplest possible MosaicJS setup.
+  
+      It gives you a working drag-and-drop list with:
+        - zero configuration beyond `root` + `selectors`
+        - automatic ghost creation
+        - automatic reordering
+        - safe DOM rollback if needed
+  
+      Try dragging the items below:
+  - type: demo
+  - type: markdown
+    text: |
+      MosaicJS works with three main pieces:
+
+      1️⃣ **HTML structure**
+         Elements with `data-mosaic-id` so Mosaic can track them.
+  - type: code
+    file: "./demo.html"
+  - type: markdown
+    text: |
+      2️⃣ **CSS**
+         Your visuals + Mosaic’s runtime classes like `.mosaic--ghost` and `.mosaic--active`.
+  - type: code
+    file: "./demo.css"
+  - type: markdown
+    text: |
+      3️⃣ **JavaScript**
+         Create the `Mosaic` instance → call `initialize()` → done.
+  - type: code
+    file: "./demo.js"
