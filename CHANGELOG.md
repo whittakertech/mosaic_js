@@ -1,5 +1,56 @@
 # Changelog
 
+## v0.2.0 — Interactive Docs + Demonster Engine
+
+### New
+- Introduced **Demonster**, a structured documentation demo engine
+  - Category model with labels, descriptions, and ordering
+  - YAML-driven demo metadata + layout composition
+  - Markdown page generation for each demo
+  - Category index pages generated automatically
+  - Deterministic iframe rendering using a shared HTML template
+  - Automatic sidebar generation with nested navigation:
+    Demos → Category → Demo
+  - Runnable iframe output located at:
+    /docs/public/demos/_iframes/<category>/<slug>/index.html
+
+- Added **shared Mosaic runtime bundle**
+  /docs/public/demos/_shared/mosaic.js  
+  Ensures all demos run against the latest library build without per-demo asset injection.
+
+- Added **Core Demo Suite**
+  - Basic Drag — minimal working drag example
+  - Event Handling — event lifecycle logging + observability
+  - CSS Class Customization — overriding default CSS class contract
+
+---
+
+### Documentation Infrastructure
+- Created reusable iframe template:
+  /docs/demos/_templates/iframe.html  
+  (Demonster is intentionally agnostic; template behavior is controlled externally)
+
+- Deterministic documentation build pipeline
+  - Pre-creates sidebar placeholder to prevent VitePress startup failures
+  - Automatically syncs Mosaic runtime bundle prior to docs generation
+  - Fully idempotent doc builds
+  - Category and demo index pages are generated automatically
+
+---
+
+### Stability
+- Fixed `package.json` exports to correctly point `types` → `dist/index.d.ts`
+- Improved Ghost pointer offset correctness
+- Added RAF lifecycle safety protections
+- Expanded test coverage — all tests passing
+
+---
+
+### Non-Goals (Intentional)
+- No framework-specific demos
+- No visual design system
+- No demo logic outside documented public APIs
+
 ## 0.1.0 — 2025-12-14
 
 First stable release of **MosaicJS**, delivering a complete, production-ready drag-and-drop engine core.
