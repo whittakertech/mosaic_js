@@ -2,7 +2,7 @@
 ![npm](https://img.shields.io/npm/v/@whittakertech/mosaic)
 ![CI](https://github.com/whittakertech/mosaic_js/actions/workflows/ci.yml/badge.svg)
 ![docs](https://github.com/whittakertech/mosaic_js/actions/workflows/docs.yml/badge.svg)
-![coverage](https://codecov.io/gh/whittakertech/mosaic_js/branch/main/graph/badge.svg)
+[![codecov](https://codecov.io/github/whittakertech/mosaic_js/branch/master/graph/badge.svg?token=916W4VPPOE)](https://codecov.io/github/whittakertech/mosaic_js)
 ![license](https://img.shields.io/npm/l/@whittakertech/mosaic)  
 
 <picture>
