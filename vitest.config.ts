@@ -4,7 +4,8 @@ export default defineConfig({
   test: {
     environment: "jsdom",
     coverage: {
-      reporter: ['text', 'html']
+      reporter: ['text', 'html', "lcov"],
+      reportsDirectory: 'coverage'
     }
   }
 });
