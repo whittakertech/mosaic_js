@@ -6,7 +6,12 @@
 function emit(name, detail?): void;
 ```
 
-Defined in: [events.ts:1](https://github.com/whittakertech/mosaic_js/blob/e0e7c26a87608c5b9c3aa6dde0292c1b0fac627f/src/events.ts#L1)
+Defined in: [events.ts:14](https://github.com/whittakertech/mosaic_js/blob/e3b70b57c2a61ecd26a333f690edf446be523672/src/events.ts#L14)
+
+Emits a MosaicJS lifecycle event.
+
+Events are dispatched on the global `window` object and are intended
+for observation by external systems.
 
 ## Parameters
 
@@ -14,10 +19,19 @@ Defined in: [events.ts:1](https://github.com/whittakertech/mosaic_js/blob/e0e7c2
 
 `string`
 
+The event name
+
 ### detail?
 
 `unknown`
 
+Optional event payload
+
 ## Returns
 
 `void`
+
+## Remarks
+
+Event emission is synchronous.
+MosaicJS does not catch or suppress listener errors.

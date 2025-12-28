@@ -25,6 +25,16 @@ export enum MosaicState {
   Destroyed = "destroyed",
 }
 
+/**
+ * The complete set of valid state transitions for MosaicJS.
+ *
+ * This object defines the deterministic finite state machine
+ * governing the drag lifecycle.
+ *
+ * @remarks
+ * This map is intentionally static and non-extensible.
+ * All state transitions must be explicit, observable, and testable.
+ */
 export const MOSAIC_TRANSITIONS = {
   [MosaicState.Idle]: [MosaicState.PointerDown, MosaicState.Destroyed],
   [MosaicState.PointerDown]: [MosaicState.Dragging, MosaicState.Idle],
@@ -35,6 +45,20 @@ export const MOSAIC_TRANSITIONS = {
   [MosaicState.Destroyed]: [],
 } as const satisfies Record<MosaicState, readonly MosaicState[]>;
 
+/**
+ * Determines whether a transition between two lifecycle states is valid.
+ *
+ * This function enforces MosaicJS’s deterministic state machine.
+ *
+ * @param from - The current lifecycle state
+ * @param to - The proposed next lifecycle state
+ *
+ * @returns `true` if the transition is permitted, `false` otherwise
+ *
+ * @remarks
+ * Invalid transitions are rejected by `Mosaic.setState` and emit
+ * a `mosaic:error` event.
+ */
 export function canTransition(from: MosaicState, to: MosaicState): boolean {
   // TS cannot infer includes() on readonly tuple unions; safe cast
   return (MOSAIC_TRANSITIONS[from] as readonly MosaicState[]).includes(to);

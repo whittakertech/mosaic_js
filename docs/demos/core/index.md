@@ -4,10 +4,10 @@ title: Core Concepts
 
 # Core Concepts
 
-The fundamental building blocks of MosaicJS. Start here.
+The fundamental building blocks of MosaicJS.
 
-## Demos
+<!--@include: @/demos/_partials/core/basic-drag/index.md-->
 
-- [Basic Drag](basic-drag/)
-- [CSS Class Customization](css-classes/)
-- [Event Handling](event-handling/)
+<!--@include: @/demos/_partials/core/css-classes/index.md-->
+
+<!--@include: @/demos/_partials/core/event-handling/index.md-->

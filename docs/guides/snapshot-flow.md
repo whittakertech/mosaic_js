@@ -9,8 +9,6 @@ A snapshot records each node’s:
 
 Snapshots enable **rollback**, allowing Mosaic to undo invalid drag operations.
 
----
-
 ## Mermaid Diagram: Snapshot Lifecycle
 
 ```mermaid
@@ -25,8 +23,6 @@ flowchart TD
     H --> I["restoreSnapshot()"]
     I --> G
 ```
-
----
 
 ## Snapshot Creation
 
@@ -44,10 +40,9 @@ restoreSnapshot(snapshot);
 
 This returns the DOM to its original recorded state.
 
----
-
 ## Guarantees
 
 - Always safe to call
 - Resistant to missing nodes
-- Works with rollback flow  
+- Works with rollback flow
+- Snapshot restoration never mutates node identity

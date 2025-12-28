@@ -12,6 +12,7 @@ export interface DemonsterCategory {
 
 export interface DemonsterOptions {
   demoDir?: string
+  sourceDir?: string
   outputDir?: string
   mountPath?: string
   strictCategories?: boolean
@@ -44,6 +45,7 @@ interface Demo {
 
 const DEFAULTS: Required<Omit<DemonsterOptions, 'categories'>> = {
   demoDir: 'demos',
+  sourceDir: 'demos',
   outputDir: 'demos',
   mountPath: '/demos',
   strictCategories: false,
@@ -210,10 +212,11 @@ export default function demonster(options: DemonsterOptions = {}): PluginOption 
 
     config() {
       const docsRoot = path.resolve(process.cwd(), 'docs')
+      const sourceRoot = path.resolve(process.cwd(), config.sourceDir)
       const root = path.join(docsRoot, config.demoDir)
       const out = path.join(docsRoot, config.outputDir)
 
-      const demos = collectDemos(root)
+      const demos = collectDemos(sourceRoot)
 
       fs.mkdirSync(out, { recursive: true })
 
@@ -283,9 +286,7 @@ title: ${cat.label}
 
 ${cat.description ?? ''}
 
-## Demos
-
-${list.map(d => `- [${d.meta.title}](${d.slug}/)`).join('\n')}
+${list.map(d => `<!--@include: @/${config.demoDir}/_partials/${cat.slug}/${d.slug}/index.md-->`).join('\n\n')}
 `
         fs.writeFileSync(path.join(dir, 'index.md'), md)
       }
@@ -311,17 +312,9 @@ ${c.description ?? ''}
       fs.writeFileSync(path.join(out, 'index.md'), mainIndex)
 
       // ------------------------------------
-      // DEMO PAGES + IFRAMES
+      // IFRAMES
       // ------------------------------------
       for (const demo of demos) {
-        const pageDir = path.join(out, demo.category, demo.slug)
-        fs.mkdirSync(pageDir, { recursive: true })
-
-        fs.writeFileSync(
-          path.join(pageDir, 'index.md'),
-          buildPageMarkdown(demo, config.mountPath, config.iframe)
-        )
-
         const iframeDir = path.join(iframeRoot, demo.category, demo.slug)
         fs.mkdirSync(iframeDir, { recursive: true })
 
@@ -332,36 +325,51 @@ ${c.description ?? ''}
       }
 
       // ------------------------------------
-      // SIDEBAR
+      // DEMO PARTIALS (NON-ROUTABLE)
       // ------------------------------------
-      // sidebar structure
-      const sidebar = [
-        {
-          text: 'Demos',
-          link: `${config.mountPath}/`,
-          collapsible: true,
-          items: Array.from(grouped.entries()).map(([cat, list]) => {
-            const def = categoryLookup.get(cat)
+      const partialsRoot = path.join(docsRoot, config.demoDir, '_partials')
 
-            return {
-              text: def?.label ?? titleCase(cat),
-              link: `${config.mountPath}/${cat}/`,
-              collapsible: true,
-              items: list.map(d => ({
-                text: d.meta.title,
-                link: `${config.mountPath}/${cat}/${d.slug}/`
-              }))
-            }
-          })
-        }
-      ]
+      for (const demo of demos) {
+        const partialDir = path.join(partialsRoot, demo.category, demo.slug)
+        fs.mkdirSync(partialDir, { recursive: true })
 
-      const sidebarJsonPath = path.join(out, 'sidebar.json')
-      fs.writeFileSync(sidebarJsonPath, JSON.stringify(sidebar, null, 2))
-
-      console.log('[DEMONSTER] wrote sidebar →', sidebarJsonPath)
+        fs.writeFileSync(
+          path.join(partialDir, 'index.md'),
+          buildPageMarkdown(demo, config.mountPath, config.iframe)
+        )
+      }
 
       return {}
     }
   }
+}
+
+export function buildDemosSidebar(options: DemonsterOptions) {
+  const config = { ...DEFAULTS, ...options }
+
+  const docsRoot = path.resolve(process.cwd(), 'docs')
+  const demosRoot = path.join(docsRoot, config.demoDir)
+
+  const categories = fs
+    .readdirSync(demosRoot)
+    .filter(name => {
+      const full = path.join(demosRoot, name)
+      return (
+        !name.startsWith('_') &&
+        fs.statSync(full).isDirectory() &&
+        fs.existsSync(path.join(full, 'index.md'))
+      )
+    })
+
+  return [
+    {
+      text: 'Demos',
+      link: `${config.mountPath}/`,
+      collapsible: true,
+      items: categories.map(cat => ({
+        text: titleCase(cat),
+        link: `${config.mountPath}/${cat}/`
+      }))
+    }
+  ]
 }

@@ -3,7 +3,7 @@ import { checkConstraints } from "../constraints";
 import { MosaicState } from "../state";
 import type { Mosaic } from "../mosaic";
 import { Ghost } from "../ghost";
-import { applyClasses, removeClasses } from "../css";
+import { applyClasses, removeClasses } from "../css/apply";
 import type { DragLifecycleHooks } from "./lifecycle";
 import { DRAG_HOOK_STATES } from "./lifecycle";
 import type { DragContext } from "./context";

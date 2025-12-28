@@ -3,17 +3,28 @@
 # Function: restoreSnapshot()
 
 ```ts
-function restoreSnapshot(s): void;
+function restoreSnapshot(snapshot): void;
 ```
 
-Defined in: [snapshot.ts:21](https://github.com/whittakertech/mosaic_js/blob/e0e7c26a87608c5b9c3aa6dde0292c1b0fac627f/src/snapshot.ts#L21)
+Defined in: [snapshot.ts:62](https://github.com/whittakertech/mosaic_js/blob/e3b70b57c2a61ecd26a333f690edf446be523672/src/snapshot.ts#L62)
+
+Restores the DOM to a previously captured snapshot state.
+
+This function reorders existing DOM nodes to match the snapshot.
 
 ## Parameters
 
-### s
+### snapshot
+
+A snapshot previously returned by [createSnapshot](createSnapshot.md)
 
 [`MosaicSnapshot`](../interfaces/MosaicSnapshot.md) | `null` | `undefined`
 
 ## Returns
 
 `void`
+
+## Remarks
+
+If the snapshot is invalid or incomplete, restoration is a no-op.
+This function does not recreate or remove DOM nodes.
