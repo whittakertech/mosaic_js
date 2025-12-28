@@ -1,18 +1,3 @@
-// src/drag/context.ts
-function buildDragContext(params) {
-  return Object.freeze({
-    mosaicRootId: params.mosaicRootId,
-    activeNodeId: params.activeNodeId,
-    dropTargetId: params.dropTargetId,
-    pointer: {
-      x: params.pointer.x,
-      y: params.pointer.y
-    },
-    state: params.state,
-    hasSnapshot: params.hasSnapshot
-  });
-}
-
 // src/snapshot.ts
 function createSnapshot(root) {
   const nodes = Array.from(root.querySelectorAll("[data-mosaic-id]"));
@@ -24,9 +9,9 @@ function createSnapshot(root) {
     }))
   };
 }
-function restoreSnapshot(s) {
-  if (!s || !Array.isArray(s.dom)) return;
-  for (const { id, parent, order } of s.dom) {
+function restoreSnapshot(snapshot) {
+  if (!snapshot || !Array.isArray(snapshot.dom)) return;
+  for (const { id, parent, order } of snapshot.dom) {
     const el = document.querySelector(`[data-mosaic-id="${id}"]`);
     if (!el) continue;
     const ref = parent.children[order] || null;
@@ -68,15 +53,6 @@ var MOSAIC_TRANSITIONS = {
 function canTransition(from, to) {
   return MOSAIC_TRANSITIONS[from].includes(to);
 }
-
-// src/css/contract.ts
-var DEFAULT_CSS_CLASS_CONTRACT = Object.freeze({
-  active: "mosaic--active",
-  ghost: "mosaic--ghost",
-  dropTarget: "mosaic--drop-target",
-  dropAllowed: "mosaic--drop-allowed",
-  dropRejected: "mosaic--drop-rejected"
-});
 
 // src/css/apply.ts
 function applyClasses(el, classes) {
@@ -169,6 +145,21 @@ var DRAG_HOOK_STATES = Object.freeze({
   onDropRejected: "rollback" /* RollingBack */,
   onDragEnd: "idle" /* Idle */
 });
+
+// src/drag/context.ts
+function buildDragContext(params) {
+  return Object.freeze({
+    mosaicRootId: params.mosaicRootId,
+    activeNodeId: params.activeNodeId,
+    dropTargetId: params.dropTargetId,
+    pointer: {
+      x: params.pointer.x,
+      y: params.pointer.y
+    },
+    state: params.state,
+    hasSnapshot: params.hasSnapshot
+  });
+}
 
 // src/drag/controller.ts
 var DragController = class {
@@ -318,6 +309,15 @@ function emit(name, detail) {
   window.dispatchEvent(new CustomEvent(name, { detail }));
 }
 
+// src/css/contract.ts
+var DEFAULT_CSS_CLASS_CONTRACT = Object.freeze({
+  active: "mosaic--active",
+  ghost: "mosaic--ghost",
+  dropTarget: "mosaic--drop-target",
+  dropAllowed: "mosaic--drop-allowed",
+  dropRejected: "mosaic--drop-rejected"
+});
+
 // src/mosaic.ts
 var Mosaic = class {
   constructor(options) {
@@ -428,9 +428,12 @@ var Mosaic = class {
   }
 };
 export {
+  DEFAULT_CSS_CLASS_CONTRACT,
+  DRAG_HOOK_STATES,
   MOSAIC_TRANSITIONS,
   Mosaic,
   MosaicState,
+  buildDragContext,
   canTransition,
   checkConstraints,
   createSnapshot,

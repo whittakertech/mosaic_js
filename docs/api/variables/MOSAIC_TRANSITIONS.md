@@ -6,7 +6,12 @@
 const MOSAIC_TRANSITIONS: object;
 ```
 
-Defined in: [state.ts:28](https://github.com/whittakertech/mosaic_js/blob/e0e7c26a87608c5b9c3aa6dde0292c1b0fac627f/src/state.ts#L28)
+Defined in: [state.ts:38](https://github.com/whittakertech/mosaic_js/blob/e3b70b57c2a61ecd26a333f690edf446be523672/src/state.ts#L38)
+
+The complete set of valid state transitions for MosaicJS.
+
+This object defines the deterministic finite state machine
+governing the drag lifecycle.
 
 ## Type Declaration
 
@@ -51,3 +56,8 @@ readonly pointerdown: readonly [Dragging, Idle];
 ```ts
 readonly rollback: readonly [Idle];
 ```
+
+## Remarks
+
+This map is intentionally static and non-extensible.
+All state transitions must be explicit, observable, and testable.

@@ -24,7 +24,7 @@ Try dragging and dropping the items. Watch the event log on the right.
   "
 ></iframe>
 
-## What This Demonstrates
+### What This Demonstrates
 
 - Mosaic emits global events such as:
   - `mosaic:init`

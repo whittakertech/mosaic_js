@@ -1,9 +1,19 @@
 import { defineConfig } from 'vitepress'
 import apiSidebar from '../api/typedoc-sidebar.json'
 import { withMermaid } from 'vitepress-plugin-mermaid'
-import demonster from './plugins/demonster'
-import demoSidebar from '../demos/sidebar.json'
+import demonster, { buildDemosSidebar } from './plugins/demonster'
 
+const DEMO_OPTIONS = {
+  mountPath: '/demos',
+  categories: [
+    {
+      slug: 'core',
+      label: 'Core Concepts',
+      description: 'The fundamental building blocks of MosaicJS.',
+      order: 1
+    }
+  ]
+}
 
 export default withMermaid(
   defineConfig({
@@ -19,21 +29,12 @@ export default withMermaid(
 
     vite: {
       plugins: [
-        demonster({
-          mountPath: "/demos",
-          categories: [
-            {
-              slug: 'core',
-              label: 'Core Concepts',
-              description: 'The fundamental building blocks of MosaicJS. Start here.',
-              order: 1
-            }
-          ]
-        })
+        demonster(DEMO_OPTIONS)
       ]
     },
 
     themeConfig: {
+      outline: [2, 3],
       logo: {
         light: '/mosaic-js-logo.svg',
         dark: '/mosaic-js-logo-dark.svg'
@@ -63,7 +64,9 @@ export default withMermaid(
         "/api/": {
           items: apiSidebar
         },
-        "/demos/": demoSidebar,
+        "/demos/": {
+          items: buildDemosSidebar(DEMO_OPTIONS)
+        },
         "/guides/": {
           base: "/guides/",
           items: [

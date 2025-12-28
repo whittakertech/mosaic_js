@@ -1,5 +1,5 @@
 import type { CSSClassContract } from "./css";
-import { applyClasses } from "./css";
+import { applyClasses } from "./css/apply";
 
 export class Ghost {
   private ghost: HTMLElement | null = null;

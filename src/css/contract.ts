@@ -1,3 +1,14 @@
+/**
+ * Defines the semantic CSS class contract used by MosaicJS.
+ *
+ * Each property represents a stable, meaning-based styling hook
+ * that may be applied during the drag lifecycle.
+ *
+ * @remarks
+ * MosaicJS does not impose visual styles.
+ * These class names are intended to integrate with external
+ * design systems or utility frameworks.
+ */
 export interface CSSClassContract {
   /** Applied to the element currently being dragged */
   active: string;
@@ -15,6 +26,19 @@ export interface CSSClassContract {
   dropRejected: string;
 }
 
+/**
+ * The default semantic CSS class contract used by MosaicJS.
+ *
+ * This object defines the canonical set of CSS class names applied
+ * during the drag lifecycle when no user overrides are provided.
+ *
+ * @remarks
+ * MosaicJS does not ship with visual styles.
+ * These class names are intended to be consumed by external
+ * design systems, utility frameworks, or application stylesheets.
+ *
+ * Consumers may override individual entries via {@link MosaicOptions.cssClasses}.
+ */
 export const DEFAULT_CSS_CLASS_CONTRACT = Object.freeze({
   active: "mosaic--active",
   ghost: "mosaic--ghost",
