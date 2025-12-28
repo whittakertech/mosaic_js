@@ -6,7 +6,11 @@
 function canTransition(from, to): boolean;
 ```
 
-Defined in: [state.ts:38](https://github.com/whittakertech/mosaic_js/blob/e0e7c26a87608c5b9c3aa6dde0292c1b0fac627f/src/state.ts#L38)
+Defined in: [state.ts:62](https://github.com/whittakertech/mosaic_js/blob/e3b70b57c2a61ecd26a333f690edf446be523672/src/state.ts#L62)
+
+Determines whether a transition between two lifecycle states is valid.
+
+This function enforces MosaicJS’s deterministic state machine.
 
 ## Parameters
 
@@ -14,10 +18,21 @@ Defined in: [state.ts:38](https://github.com/whittakertech/mosaic_js/blob/e0e7c2
 
 [`MosaicState`](../enums/MosaicState.md)
 
+The current lifecycle state
+
 ### to
 
 [`MosaicState`](../enums/MosaicState.md)
 
+The proposed next lifecycle state
+
 ## Returns
 
 `boolean`
+
+`true` if the transition is permitted, `false` otherwise
+
+## Remarks
+
+Invalid transitions are rejected by `Mosaic.setState` and emit
+a `mosaic:error` event.

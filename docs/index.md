@@ -40,44 +40,42 @@ MosaicJS provides:
 - A simple, typed event and hook surface
 - Predictable behavior backed by exhaustive test coverage
 
-MosaicJS does **not** impose styling, frameworks, or layout assumptions.  
+MosaicJS does **not** impose styling, frameworks, or layout assumptions,  
+nor does it attempt to manage layout, animations, accessibility semantics, 
+or cross-document dragging.  
 It exists to be embedded safely inside long-lived systems and design ecosystems.
 
-This documentation describes **MosaicJS v1.0**, where the drag lifecycle, CSS contract, and public extension points are considered **stable**.
-
----
+This documentation describes MosaicJS’s stable public API
 
 ## Documentation Overview
 
 Use the sections below to understand MosaicJS from first principles through advanced customization.
 
-### Getting Started
+### [Getting Started](./getting-started)
 - **Introduction** — What MosaicJS is (and is not)
 - **Installation** — Adding MosaicJS to your project
 - **Basic Usage** — Creating and initializing a Mosaic instance
 
-### Core Concepts
+### [Core Concepts](./guides/architecture)
 - **Architecture Overview** — How MosaicJS is structured internally
 - **Drag Lifecycle** — States, transitions, and guarantees
 - **Snapshots & Rollback** — How DOM safety is enforced
 - **Constraints System** — Validating drops deterministically
 
-### Styling & Customization
+### [Styling & Customization](./guides/css-contract)
 - **CSS Class Contract** — Semantic, framework-agnostic styling hooks
 - **Default CSS Reference** — Generated, non-opinionated class reference
 - **Customizing CSS Classes** — Integrating with design systems and utility CSS
 
-### Events & Extension Points
+### [Events & Extension Points](./guides/drag-lifecycle)
 - **Lifecycle Hooks** — Observing drag behavior safely
 - **Events Layer** — Typed events for external systems
 - **Hook Invariants** — Guarantees and restrictions
 
-### Advanced Topics
+### [Advanced Topics](./guides/snapshot-flow)
 - **Ghost Elements** — Drag previews and behavior
 - **Error Handling** — Fail-fast guarantees
 - **Testing Guarantees** — What MosaicJS explicitly covers (and why)
-
----
 
 ## Design Philosophy
 
@@ -88,11 +86,12 @@ MosaicJS is built around a small set of non-negotiable principles:
 - **Contracts over conventions**
 - **Generated documentation over hand-maintained truth**
 
+These principles are enforced by MosaicJS’s deterministic state machine and snapshot system.
 If MosaicJS changes the DOM, it does so deliberately, observably, and reversibly.
-
----
 
 ## Where to go next
 
-If you’re new to MosaicJS, start with **Architecture Overview** and **Basic Usage**.  
-If you’re integrating into an existing system, see **CSS Class Contract** and **Constraints System**.
+If you’re new to MosaicJS, start with **[Architecture Overview](./guides/architecture)**
+and **[Basic Usage](./getting-started)**.  
+If you’re integrating into an existing system, see **[CSS Class Contract](./guides/css-contract)** 
+and **[Constraints System](./guides/constraints-design)**.

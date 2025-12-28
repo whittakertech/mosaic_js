@@ -2,7 +2,7 @@
 ![npm](https://img.shields.io/npm/v/@whittakertech/mosaic)
 ![CI](https://github.com/whittakertech/mosaic_js/actions/workflows/ci.yml/badge.svg)
 ![docs](https://github.com/whittakertech/mosaic_js/actions/workflows/docs.yml/badge.svg)
-![coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)
+![coverage](https://codecov.io/gh/whittakertech/mosaic_js/branch/main/graph/badge.svg)
 ![license](https://img.shields.io/npm/l/@whittakertech/mosaic)  
 
 <picture>

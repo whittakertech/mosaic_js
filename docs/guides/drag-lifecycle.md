@@ -5,8 +5,6 @@ Pointer events (`pointerdown`, `pointermove`, `pointerup`) act as **inputs** tha
 
 All drag behavior is governed by explicit state transitions that are observable, testable, and guaranteed.
 
----
-
 ## Drag State Machine
 
 ```mermaid
@@ -14,8 +12,6 @@ All drag behavior is governed by explicit state transitions that are observable,
 ```
 
 > <small>*Diagram generated from* `src/state.ts` *and rendered via MermaidJS*</small>
-
----
 
 ## Lifecycle Hooks
 
@@ -52,8 +48,6 @@ Lifecycle hooks are intended for **observation and side effects** such as
 analytics, logging, or UI feedback.   
 Hooks **must not** manipulate the state machine or trigger additional drag operations.
 
----
-
 ## PointerDown Phase
 
 Triggered by a valid `pointerdown` event on a draggable node.
@@ -71,8 +65,6 @@ pointerDown(e) {
 - Capture a snapshot of the current DOM order
 - Transition the engine to `PointerDown`
 
----
-
 ## Dragging Phase
 
 - The active node follows pointer movement
@@ -80,8 +72,6 @@ pointerDown(e) {
 - The lifecycle transitions to and remains in `Dragging`
 
 This phase may repeat many times during a single drag operation.
-
----
 
 ## Dropping Phase
 
@@ -95,8 +85,6 @@ const result = checkConstraints(dragged, target, options);
 - If constraints **fail**, Mosaic restores the snapshot via `restoreSnapshot()`
 
 In both cases, cleanup is guaranteed and the lifecycle proceeds toward `Idle`.
-
----
 
 ## Guarantees
 

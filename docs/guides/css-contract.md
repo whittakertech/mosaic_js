@@ -13,8 +13,6 @@ This contract exists to make MosaicJS:
 MosaicJS **never injects CSS rules**.  
 It only applies and removes semantic class names.
 
----
-
 ## Design Principles
 
 The CSS class contract follows four core rules:
@@ -41,8 +39,6 @@ No framework integration is required or assumed.
 All class names are overrideable at instantiation time.
 Consumers may replace any subset of the contract while preserving behavior.
 
----
-
 ## The CSS Class Contract
 
 MosaicJS exposes a fixed set of semantic CSS class hooks representing
@@ -53,8 +49,6 @@ Each hook corresponds to a specific point in the drag lifecycle
 
 The **exact class names** are defined by the active CSS class contract
 and are treated as implementation-level configuration rather than API surface.
-
----
 
 ## Default CSS Class Reference
 
@@ -74,8 +68,6 @@ This file:
 ```css
 <!--@include: ./_generated/default-css.css-->
 ```
-
----
 
 ## Customizing CSS Classes
 
@@ -98,8 +90,6 @@ const mosaic = new Mosaic({
 Each contract value may contain **one or more space-separated class names**,
 enabling full compatibility with utility-first CSS frameworks.
 
----
-
 ## Class Application Helpers
 
 MosaicJS applies and removes CSS classes using internal helper utilities:
@@ -116,9 +106,8 @@ These helpers:
 - Perform no-ops for empty strings
 
 They are exported for advanced integrations but are **not required**
-for standard usage.
-
----
+for standard usage. They do not perform validation and are 
+intentionally minimal.
 
 ## Ghost Elements
 
@@ -131,8 +120,6 @@ The ghost (drag preview) element:
 MosaicJS does not apply visual styling to the ghost element.
 Only positional behavior is enforced.
 
----
-
 ## Error Handling
 
 Calling `Ghost.create` with a non-HTMLElement will throw:
@@ -142,8 +129,6 @@ TypeError: Ghost.create expected HTMLElement; received <type>
 ```
 
 This ensures misuse fails loudly and predictably without leaving side effects.
-
----
 
 ## Summary
 

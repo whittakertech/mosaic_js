@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import { applyClasses, removeClasses } from "../src/css";
+import { applyClasses, removeClasses } from "../src/css/apply";
 
 describe("applyClasses / removeClasses", () => {
   let el: HTMLElement;

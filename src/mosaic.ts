@@ -1,4 +1,4 @@
-import { DragController } from "./drag";
+import { DragController } from "./drag/controller";
 import { MosaicState, canTransition } from "./state";
 import type { MosaicSnapshot } from "./snapshot";
 import { restoreSnapshot } from "./snapshot";
@@ -7,15 +7,79 @@ import type { CSSClassContract } from "./css";
 import { DEFAULT_CSS_CLASS_CONTRACT } from "./css";
 import type { DragLifecycleHooks } from "./drag";
 
+/**
+ * Configuration options used to construct a Mosaic instance.
+ *
+ * MosaicOptions define the DOM scope, selector semantics, styling hooks,
+ * and lifecycle observation points for a Mosaic drag session.
+ *
+ * @remarks
+ * Options are read once at construction time.
+ * Changing values after initialization has no effect.
+ */
 export interface MosaicOptions {
+  /**
+   * The root DOM element managed by MosaicJS.
+   *
+   * All draggable nodes must exist within this element.
+   */
   root: HTMLElement;
+
+  /**
+   * Selector configuration used to identify draggable elements
+   * and related structural roles.
+   */
   selectors: {
+    /**
+     * Selector matching draggable nodes.
+     *
+     * This selector defines which elements participate in drag operations.
+     */
     node: string;
+
+    /**
+     * Optional selector identifying logical grouping elements.
+     *
+     * @remarks
+     * Group selectors are reserved for future features such as
+     * grouped or nested drag interactions.
+     * They are not interpreted by MosaicJS in v0.2.
+     */
     group?: string;
+
+    /**
+     * Optional selector identifying child elements within a draggable node.
+     *
+     * @remarks
+     * This selector is intended for structural clarity and future extensibility.
+     * It is not required for basic drag-and-drop behavior.
+     */
     children?: string;
+
+    /**
+     * Optional selector identifying a drag handle within a node.
+     *
+     * @remarks
+     * When provided, drag initiation may be restricted to matching
+     * handle elements in future versions.
+     * This selector is currently advisory.
+     */
     handle?: string;
   };
+
+  /**
+   * Optional overrides for the default CSS class contract.
+   *
+   * Unspecified entries fall back to MosaicJS defaults.
+   */
   cssClasses?: Partial<CSSClassContract>;
+
+  /**
+   * Optional lifecycle hooks for observing drag behavior.
+   *
+   * Hooks are invoked in strict alignment with the internal
+   * deterministic state machine.
+   */
   dragLifecycleHooks?: DragLifecycleHooks;
 }
 

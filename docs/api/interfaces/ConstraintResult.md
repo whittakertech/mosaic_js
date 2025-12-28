@@ -2,7 +2,19 @@
 
 # Interface: ConstraintResult
 
-Defined in: [constraints.ts:3](https://github.com/whittakertech/mosaic_js/blob/e0e7c26a87608c5b9c3aa6dde0292c1b0fac627f/src/constraints.ts#L3)
+Defined in: [constraints.ts:15](https://github.com/whittakertech/mosaic_js/blob/e3b70b57c2a61ecd26a333f690edf446be523672/src/constraints.ts#L15)
+
+The result of evaluating a drag-and-drop constraint.
+
+A `ConstraintResult` represents a deterministic decision about whether
+a proposed drop operation is allowed.
+
+## Remarks
+
+Constraint evaluation in MosaicJS is synchronous, pure, and side-effect free.
+A rejected result will trigger rollback behavior if a snapshot is present.
+
+Consumers should treat `reason` as diagnostic metadata only.
 
 ## Properties
 
@@ -12,7 +24,9 @@ Defined in: [constraints.ts:3](https://github.com/whittakertech/mosaic_js/blob/e
 allowed: boolean;
 ```
 
-Defined in: [constraints.ts:4](https://github.com/whittakertech/mosaic_js/blob/e0e7c26a87608c5b9c3aa6dde0292c1b0fac627f/src/constraints.ts#L4)
+Defined in: [constraints.ts:19](https://github.com/whittakertech/mosaic_js/blob/e3b70b57c2a61ecd26a333f690edf446be523672/src/constraints.ts#L19)
+
+Whether the drop operation is permitted.
 
 ***
 
@@ -22,4 +36,9 @@ Defined in: [constraints.ts:4](https://github.com/whittakertech/mosaic_js/blob/e
 optional reason: string;
 ```
 
-Defined in: [constraints.ts:5](https://github.com/whittakertech/mosaic_js/blob/e0e7c26a87608c5b9c3aa6dde0292c1b0fac627f/src/constraints.ts#L5)
+Defined in: [constraints.ts:27](https://github.com/whittakertech/mosaic_js/blob/e3b70b57c2a61ecd26a333f690edf446be523672/src/constraints.ts#L27)
+
+Optional machine-readable reason for rejection.
+
+This value is not interpreted by MosaicJS internally, but may be
+surfaced through events or logs for debugging purposes.

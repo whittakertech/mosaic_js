@@ -10,9 +10,8 @@ The system is organized into four cooperating subsystems:
 3. **Constraints System** — validates whether a potential drop is allowed
 4. **Events Layer** — unified, typed event dispatch for all public signals
 
-Drag behavior (pointerdown → pointermove → pointerup) is implemented in
-*DragController*, connecting all subsystems.
----
+Drag behavior is coordinated by the Mosaic core and executed by the DragController, which 
+translates pointer input into deterministic state transitions and lifecycle events.
 
 ## High-Level Mermaid Diagram
 
@@ -26,7 +25,12 @@ flowchart LR
 
 Mosaic Core is the conductor; all other modules are instruments.
 
----
+## Internal Modules
+
+Some internal modules (such as `DragController` and `Ghost`) are described for 
+architectural clarity. These modules are not part of MosaicJS’s public API and 
+must not be imported or relied upon directly. Their behavior may change without 
+notice between minor versions.
 
 ## Mosaic Core
 
@@ -40,8 +44,6 @@ Responsibilities:
 - delegate drag logic to DragController
 
 It never mutates the DOM directly except through snapshots.
-
----
 
 ## Snapshot System
 
@@ -57,8 +59,6 @@ Snapshots store:
 - stable `data-mosaic-id`
 
 This forms Mosaic’s guarantee: **invalid drags will always safely roll back**.
-
----
 
 ## Constraints System
 
@@ -84,8 +84,6 @@ The core constraints validate:
 
 Future: hierarchical rules, custom constraint pipelines.
 
----
-
 ## Events Layer
 
 All internal events flow through:
@@ -103,8 +101,6 @@ This standardizes Mosaic’s public surface:
 - `mosaic:rollback`
 
 It ensures consistency across all UIs and frameworks.
-
----
 
 ## DragController
 
@@ -140,8 +136,6 @@ sequenceDiagram
 
 This module completes Mosaic’s ergonomic drag story.
 
----
-
 ## Architectural Principles
 
 - **Reversible:** every operation can be undone
@@ -149,8 +143,6 @@ This module completes Mosaic’s ergonomic drag story.
 - **Observable:** state and mutations broadcast through events
 - **Isolated:** each subsystem is independently testable
 - **Framework-agnostic:** Mosaic works with plain DOM, React, Vue, or Web Components
-
----
 
 ## Summary
 

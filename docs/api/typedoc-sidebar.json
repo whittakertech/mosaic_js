@@ -28,6 +28,18 @@
         "link": "/api/interfaces/ConstraintResult.md"
       },
       {
+        "text": "CSSClassContract",
+        "link": "/api/interfaces/CSSClassContract.md"
+      },
+      {
+        "text": "DragContext",
+        "link": "/api/interfaces/DragContext.md"
+      },
+      {
+        "text": "DragLifecycleHooks",
+        "link": "/api/interfaces/DragLifecycleHooks.md"
+      },
+      {
         "text": "MosaicOptions",
         "link": "/api/interfaces/MosaicOptions.md"
       },
@@ -42,6 +54,14 @@
     "collapsed": false,
     "items": [
       {
+        "text": "DEFAULT_CSS_CLASS_CONTRACT",
+        "link": "/api/variables/DEFAULT_CSS_CLASS_CONTRACT.md"
+      },
+      {
+        "text": "DRAG_HOOK_STATES",
+        "link": "/api/variables/DRAG_HOOK_STATES.md"
+      },
+      {
         "text": "MOSAIC_TRANSITIONS",
         "link": "/api/variables/MOSAIC_TRANSITIONS.md"
       }
@@ -51,6 +71,10 @@
     "text": "Functions",
     "collapsed": false,
     "items": [
+      {
+        "text": "buildDragContext",
+        "link": "/api/functions/buildDragContext.md"
+      },
       {
         "text": "canTransition",
         "link": "/api/functions/canTransition.md"

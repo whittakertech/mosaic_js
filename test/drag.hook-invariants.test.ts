@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from "vitest";
-import { DragController } from "../src/drag";
+import { DragController } from "../src/drag/controller";
 import { MosaicState } from "../src";
-import type { DragContext } from "../src/drag";
+import type { DragContext } from "../src";
 
 // Minimal Mosaic stub — no DOM, no side effects
 const mosaicStub = {

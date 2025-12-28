@@ -3,8 +3,6 @@
 Constraints determine whether a drag operation may complete.  
 They enforce structural rules and prevent invalid mutations.
 
----
-
 ## Mermaid Diagram: Constraint Evaluation
 
 ```mermaid
@@ -16,9 +14,7 @@ flowchart TD
     E --> F[Rollback via restoreSnapshot]
 ```
 
----
-
-## Built-in v0.1 Constraints
+## Built-in Constraints (since v0.1)
 
 ### Self-Drop Handling
 ```typescript
@@ -33,8 +29,6 @@ if (!target.matches(options.selectors.node)) {
   return { allowed: false, reason: "invalid-target" };
 }
 ```
-
----
 
 ## Extending Constraints (v0.2+)
 
@@ -51,8 +45,6 @@ Future features will allow:
 - group-based constraints
 - restricted-parent rules
 - custom constraint registration
-
----
 
 ## Guarantees
 
