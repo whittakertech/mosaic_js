@@ -71,7 +71,7 @@ jobs:
   codex_publish:
     needs: build-docs-artifact
     if: github.server_url == 'https://github.com'
-    uses: whittakertech/codex/.github/workflows/publish_docs.yml@main
+    uses: whittakertech/codex/.github/workflows/publish_docs.yml@master
     with:
       engine_owner: whittakertech
       engine_repo: mosaic_js
