@@ -1,3 +1,7 @@
+---
+description: How MosaicJS is structured internally — the state machine, snapshot system, constraints system, and events layer that make up its architecture.
+---
+
 # Mosaic Architecture
 
 Mosaic is a small, event-driven drag-and-drop engine.  
@@ -28,7 +32,7 @@ Mosaic Core is the conductor; all other modules are instruments.
 ## Internal Modules
 
 Some internal modules (such as `DragController` and `Ghost`) are described for 
-architectural clarity. These modules are not part of MosaicJS’s public API and 
+architectural clarity. These modules are not part of MosaicJS's public API and 
 must not be imported or relied upon directly. Their behavior may change without 
 notice between minor versions.
 
@@ -58,7 +62,7 @@ Snapshots store:
 - child index
 - stable `data-mosaic-id`
 
-This forms Mosaic’s guarantee: **invalid drags will always safely roll back**.
+This forms Mosaic's guarantee: **invalid drags will always safely roll back**.
 
 ## Constraints System
 
@@ -92,7 +96,7 @@ All internal events flow through:
 emit(name, detail?)
 ```
 
-This standardizes Mosaic’s public surface:
+This standardizes Mosaic's public surface:
 
 - `mosaic:init`
 - `mosaic:state`
@@ -134,7 +138,7 @@ sequenceDiagram
     end
 ```
 
-This module completes Mosaic’s ergonomic drag story.
+This module completes Mosaic's ergonomic drag story.
 
 ## Architectural Principles
 

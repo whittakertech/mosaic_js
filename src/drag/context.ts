@@ -38,6 +38,32 @@ export interface DragContext {
 
   /** Whether a drag snapshot currently exists */
   readonly hasSnapshot: boolean;
+
+  /**
+   * Uniquely identifies the originating {@link Mosaic} instance (#18).
+   *
+   * @remarks
+   * Unlike {@link DragContext.mosaicRootId} — which is derived from the
+   * root element's DOM `id` and is not guaranteed unique (multiple pages,
+   * SPA route re-renders, or simple author oversight can collide) —
+   * `mosaicInstanceId` is generated once at `Mosaic` construction time and
+   * is guaranteed distinct across instances on the same page. Consumers
+   * observing multiple Mosaic instances should filter by this field, not
+   * `mosaicRootId`.
+   */
+  readonly mosaicInstanceId: string;
+
+  /**
+   * The active node's group container `id` (#13's convention), or `null`
+   * when ungrouped or `selectors.group` isn't configured (#18).
+   *
+   * @remarks
+   * Sourced from the same value {@link Mosaic.setState} already forwards
+   * as its `groupId` argument — this field threads that same value into
+   * the `DragContext` seen by lifecycle hooks, which previously had no
+   * access to it.
+   */
+  readonly groupId: string | null;
 }
 
 /**
@@ -64,6 +90,8 @@ export function buildDragContext(params: {
   pointer: { x: number; y: number };
   state: MosaicState;
   hasSnapshot: boolean;
+  mosaicInstanceId: string;
+  groupId: string | null;
 }): DragContext {
   return Object.freeze({
     mosaicRootId: params.mosaicRootId,
@@ -75,5 +103,7 @@ export function buildDragContext(params: {
     },
     state: params.state,
     hasSnapshot: params.hasSnapshot,
+    mosaicInstanceId: params.mosaicInstanceId,
+    groupId: params.groupId,
   });
 }

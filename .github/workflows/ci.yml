@@ -26,7 +26,15 @@ jobs:
       - run: npm run build
       - run: npm run docs:build
 
+      # README.md's Codecov badge is scoped to branch/master specifically
+      # (codecov.io/.../branch/master/graph/badge.svg) -- uploading from
+      # every PR/feature-branch run risks the self-hosted Gitea Actions
+      # runner's ambiguous branch detection (it mimics GitHub Actions env
+      # vars but isn't really running on github.com) misattributing a
+      # throwaway/WIP branch's coverage as master's, polluting the public
+      # badge. Only the actual master build should ever report.
       - name: Upload coverage reports to Codecov
+        if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}

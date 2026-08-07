@@ -6,3 +6,4 @@ export * from "./snapshot";
 export * from "./constraints";
 export * from "./css";
 export * from "./drag";
+export type { WorldMutatedPayload } from "./world-tolerance";

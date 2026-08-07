@@ -1,3 +1,7 @@
+---
+description: Install MosaicJS and create your first Mosaic instance — a step-by-step introduction to initialization and basic usage.
+---
+
 # Getting Started
 
 MosaicJS is a lightweight, event-driven drag-and-drop engine for the DOM.
@@ -30,7 +34,7 @@ const mosaic = new Mosaic({
 mosaic.initialize();
 ```
 
-That’s it.  
+That's it.  
 Once initialized, MosaicJS immediately begins managing drag interactions.
 
 ::: tip No framework required
@@ -133,8 +137,8 @@ It may not be the right tool in these situations:
 - You want a **drop-in UI component** with prebuilt styles and animations  
   (MosaicJS provides behavior only, not visuals)
 
-- Your drag state lives entirely inside a framework’s virtual DOM  
-  and you don’t want DOM-level events
+- Your drag state lives entirely inside a framework's virtual DOM  
+  and you don't want DOM-level events
 
 - You need **cross-window, cross-iframe, or OS-level dragging**
 
@@ -153,8 +157,8 @@ From here, you can explore MosaicJS in increasing depth:
 
 - 👉 **[Interactive Demos](/demos/)**
 - 👉 **[Core Concepts Demos](/demos/core/)**
-- 👉 **[Drag Lifecycle Guide](/guides/drag-lifecycle)**
-- 👉 **[Constraints Design Guide](/guides/constraints-design)**
-- 👉 **[CSS Class Contract](/guides/css-contract)**
+- 👉 **[Drag Lifecycle Guide](/documentation/drag-lifecycle)**
+- 👉 **[Constraints Design Guide](/documentation/constraints-design)**
+- 👉 **[CSS Class Contract](/documentation/css-contract)**
 
 These sections build on each other, but you can jump to any one depending on what you need.

@@ -8,12 +8,12 @@ import path from "path";
  *   src/drag/lifecycle.ts → DRAG_HOOK_STATES
  *
  * Output:
- *   docs/guides/_generated/drag-hook-table.md
+ *   docs/documentation/_generated/drag-hook-table.md
  */
 
 const sourceFile = path.resolve("src/drag/lifecycle.ts");
 const outPath = path.resolve(
-  "docs/guides/_generated/drag-hook-table.md"
+  "docs/documentation/_generated/drag-hook-table.md"
 );
 
 const source = fs.readFileSync(sourceFile, "utf8");

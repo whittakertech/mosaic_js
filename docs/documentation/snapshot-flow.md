@@ -1,7 +1,7 @@
 # Snapshot Flow
 
 Mosaic uses snapshots to guarantee safe, reversible DOM mutations.  
-A snapshot records each node’s:
+A snapshot records each node's:
 
 - parent element
 - index within its parent

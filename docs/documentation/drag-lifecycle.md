@@ -62,13 +62,17 @@ pointerDown(e) {
 
 **Responsibilities:**
 - Identify and lock the active node
+- If `selectors.handle` is configured, gate initiation to a `pointerdown`
+  within that handle — see [Drag Handles](./drag-handles)
 - Capture a snapshot of the current DOM order
 - Transition the engine to `PointerDown`
 
 ## Dragging Phase
 
 - The active node follows pointer movement
-- Potential drop targets are computed internally (v0.2)
+- Potential drop targets are computed internally — see
+  [Drop Targets](./drop-targets) and [Group Containers](./group-containers)
+  for the two selectors that scope this resolution
 - The lifecycle transitions to and remains in `Dragging`
 
 This phase may repeat many times during a single drag operation.

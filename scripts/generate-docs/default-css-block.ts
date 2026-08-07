@@ -8,12 +8,12 @@ import path from "path";
  *   src/css/contract.ts → DEFAULT_CSS_CLASS_CONTRACT
  *
  * Output:
- *   docs/guides/_generated/default-css.css
+ *   docs/documentation/_generated/default-css.css
  */
 
 const sourceFile = path.resolve("src/css/contract.ts");
 const outPath = path.resolve(
-  "docs/guides/_generated/default-css.css"
+  "docs/documentation/_generated/default-css.css"
 );
 
 const source = fs.readFileSync(sourceFile, "utf8");

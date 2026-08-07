@@ -1,4 +1,6 @@
-FROM node:20-slim
+# Node >=22 is required: the vitest 4 + jsdom test suite does a require() of an
+# ESM parse5, which only works on Node >=22 (Node <22 hangs at startup).
+FROM node:22-slim
 
 WORKDIR /app
 

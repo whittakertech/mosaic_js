@@ -1,5 +1,78 @@
 # Changelog
 
+## v0.5.0 — Spatial Intelligence, Event Refinement, Constraint Power
+
+Bundles what were tracked as three separate Redmine milestones (v0.3
+"Spatial Intelligence", v0.4 "Event Refinement", v0.5 "Constraint
+Power") into a single release — none of the intermediate stages were
+ever published independently, so there's nothing to stage backward
+into. Every item below shipped as a real, CI-verified PR (100%
+coverage maintained throughout); design notes summarize the more
+consequential calls made along the way.
+
+### Spatial primitives — drop targets, groups, nesting, handles
+- **Explicit drop targets** (`selectors.dropTarget`): elements distinct
+  from draggable nodes can now be valid drop destinations, distinguished
+  via `targetType` on hover events and a dedicated CSS class.
+- **Group containers** (`selectors.group`): scope reordering to sibling
+  groups by default; cross-group dragging is opt-in
+  (`crossGroupDrag`), rejected otherwise with reason `"group-boundary"`.
+- **Nested drop targets**: real reparenting into explicit drop targets,
+  with `maxNestingDepth` and circular-nesting guards
+  (`"circular-nesting"` / `"nesting-depth-exceeded"`), plus opt-in
+  bubble-up constraint retry (`bubbleConstraints`).
+- **Drag handles** (`selectors.handle`): restrict drag initiation to a
+  handle element within the node, with containment enforced so an
+  unrelated element reusing the handle class can't gate other nodes.
+- **World tolerance** (`worldTolerance`): opt-in `MutationObserver`
+  during active drags detects externally-caused DOM mutations and
+  re-snapshots so rollback targets the last known-good state, not a
+  stale drag-start state. Disambiguates MosaicJS's own DOM writes
+  (live reorder, rollback) from genuinely external ones by draining
+  the observer's own queue after each internal write.
+
+### Event refinement
+- `mosaic:state` and `mosaic:hover:enter`/`leave` payloads now carry
+  `groupId`/`dropTargetId` (or `null` when unconfigured) alongside the
+  existing fields, with a documented, tested emission-order guarantee
+  across the full drag lifecycle (confirm, reject/rollback, cross-group,
+  hover transitions).
+- `DragContext` gained `mosaicInstanceId` (a real generated identifier,
+  distinct from the DOM-`id`-derived `mosaicRootId`, which isn't
+  guaranteed unique across instances) and `groupId`.
+
+### Constraint power — user constraints, diagnostics, cross-container
+- `MosaicOptions.constraints`: user-defined drop constraints, evaluated
+  after built-ins, using the exact same `(input: ConstraintInput) =>
+  ConstraintResult` signature as MosaicJS's own — no separate calling
+  convention.
+- `ConstraintResult` gained optional `metadata`; `mosaic:mutation:rejected`
+  /`confirmed` now carry the full result / an evaluated-count summary.
+- **Cross-container dragging**: `Mosaic.link()`/`unlink()` registers
+  peer instances (symmetric, non-transitive); linked instances support
+  live hover/reorder preview across each other's DOM during an active
+  drag, not just a drop-time check. `mosaic:container:transfer` fires
+  on a confirmed cross-instance move. Design note: rollback across
+  linked instances turned out to need no new snapshot-coordination
+  machinery — the existing single-snapshot model already handles it
+  correctly via `insertBefore`'s implicit-move semantics, confirmed
+  empirically before deciding whether to build anything new.
+  `MosaicOptions.crossContainerConstraints` reuses the same constraint
+  signature as same-instance user constraints.
+
+### Documentation & tooling
+- Docs site restructured into Documentation vs. Tutorials sections;
+  new conceptual pages for drop targets, group containers, drag
+  handles, and constraint scoping across groups/containers.
+- `sitemap.xml`, `robots.txt`, and per-page meta descriptions added to
+  the docs build.
+- CI's Codecov upload step is now gated to `master`/`main` pushes only
+  — previously ran on every branch/PR, risking a self-hosted runner's
+  branch-detection ambiguity polluting the public, master-scoped
+  coverage badge.
+
+---
+
 ## v0.2.0 — Interactive Docs + Demonster Engine
 
 ### New

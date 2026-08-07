@@ -42,6 +42,11 @@ describe("Hover Target Events", () => {
     expect(enterSpy).toHaveBeenCalledTimes(1);
     expect(enterSpy.mock.calls[0][0].detail).toEqual({
       targetId: "b",
+      targetType: "node",
+      depth: 0,
+      sourceInstanceId: mosaic.mosaicInstanceId,
+      targetInstanceId: mosaic.mosaicInstanceId,
+      groupId: null,
     });
   });
 
@@ -66,6 +71,11 @@ describe("Hover Target Events", () => {
     expect(leaveSpy).toHaveBeenCalledTimes(1);
     expect(leaveSpy.mock.calls[0][0].detail).toEqual({
       targetId: "b",
+      targetType: "node",
+      depth: 0,
+      sourceInstanceId: mosaic.mosaicInstanceId,
+      targetInstanceId: mosaic.mosaicInstanceId,
+      groupId: null,
     });
   });
 

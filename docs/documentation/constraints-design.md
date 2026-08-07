@@ -49,4 +49,11 @@ Future features will allow:
 ## Guarantees
 
 - Constraint evaluation is deterministic
-- Rejecting a drop always invokes rollback  
+- Rejecting a drop always invokes rollback
+
+## See Also
+
+- [Constraint Scoping Across Groups and Containers](./constraint-scoping) —
+  how the group-boundary built-in check, user-registered group-level
+  constraints, and cross-container constraints layer on top of each other,
+  with the full evaluation order and real registration examples  

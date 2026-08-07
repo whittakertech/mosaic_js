@@ -55,10 +55,10 @@ export default withMermaid(
         }
       ],
       nav: [
-        { text: 'Getting Started', link: '/getting-started' },
+        { text: 'Documentation', link: '/documentation/architecture' },
+        { text: 'Tutorials', link: '/tutorials/getting-started' },
         { text: 'Demos', link: '/demos' },
-        { text: 'API', link: '/api/' },
-        { text: 'Guides', link: '/guides/architecture' }
+        { text: 'API', link: '/api/' }
       ],
       sidebar: {
         "/api/": {
@@ -67,14 +67,27 @@ export default withMermaid(
         "/demos/": {
           items: buildDemosSidebar(DEMO_OPTIONS)
         },
-        "/guides/": {
-          base: "/guides/",
+        // #23/#24: reference/concepts/API-adjacent content.
+        "/documentation/": {
+          base: "/documentation/",
           items: [
             { text: "Architecture", link: "architecture" },
             { text: "Constraints Design" , link: "constraints-design" },
             { text: "CSS Contract", link: "css-contract" },
             { text: "Drag Lifecycle", link: "drag-lifecycle" },
-            { text: "Snapshot Flow", link: "snapshot-flow" }
+            { text: "Snapshot Flow", link: "snapshot-flow" },
+            { text: "Drop Targets", link: "drop-targets" },
+            { text: "Group Containers", link: "group-containers" },
+            { text: "Drag Handles", link: "drag-handles" },
+            { text: "Constraint Scoping", link: "constraint-scoping" }
+          ]
+        },
+        // #23: step-by-step walkthroughs, distinct from Documentation's
+        // reference/concept material.
+        "/tutorials/": {
+          base: "/tutorials/",
+          items: [
+            { text: "Getting Started", link: "getting-started" }
           ]
         }
       }

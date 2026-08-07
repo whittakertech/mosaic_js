@@ -8,12 +8,12 @@ import path from "path";
  *   src/state.ts → MOSAIC_TRANSITIONS
  *
  * Output:
- *   docs/guides/_generated/drag-state-machine.md
+ *   docs/documentation/_generated/drag-state-machine.md
  */
 
 const stateFile = path.resolve("src/state.ts");
 const outPath = path.resolve(
-  "docs/guides/_generated/drag-state-machine.mmd"
+  "docs/documentation/_generated/drag-state-machine.mmd"
 );
 
 const source = fs.readFileSync(stateFile, "utf8");

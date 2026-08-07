@@ -24,6 +24,12 @@ export interface CSSClassContract {
 
   /** Applied when a drop is rejected */
   dropRejected: string;
+
+  /** Applied to the active node's group container during drag (#13) */
+  groupActive: string;
+
+  /** Applied to a group container being hovered during cross-group drag (#13) */
+  groupHover: string;
 }
 
 /**
@@ -45,4 +51,6 @@ export const DEFAULT_CSS_CLASS_CONTRACT = Object.freeze({
   dropTarget: "mosaic--drop-target",
   dropAllowed: "mosaic--drop-allowed",
   dropRejected: "mosaic--drop-rejected",
+  groupActive: "mosaic--group-active",
+  groupHover: "mosaic--group-hover",
 } as const satisfies CSSClassContract);

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://mosaicjs.whittakertech.com/sitemap.xml

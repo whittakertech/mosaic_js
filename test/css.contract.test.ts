@@ -9,6 +9,8 @@ describe("DEFAULT_CSS_CLASS_CONTRACT", () => {
       dropTarget: "mosaic--drop-target",
       dropAllowed: "mosaic--drop-allowed",
       dropRejected: "mosaic--drop-rejected",
+      groupActive: "mosaic--group-active",
+      groupHover: "mosaic--group-hover",
     });
   });
 
